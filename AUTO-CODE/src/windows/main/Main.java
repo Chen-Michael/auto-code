@@ -96,7 +96,7 @@ public class Main extends JFrame {
 					list_1.setListData(tableNames);
 					list_1.setSelectedIndex(0);
 				}else {
-					list_1.removeAll();
+					list_1.setListData(new String[0]);
 				}
 			}
 		});

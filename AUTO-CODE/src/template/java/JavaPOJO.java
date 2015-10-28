@@ -1,47 +1,66 @@
 package template.java;
 
+import java.util.List;
+
 import other.Utils;
 import template.POJO;
 
 public class JavaPOJO implements POJO {
+	
+	@Override
+	public String getClassImport(List<String> className) {
+		StringBuilder sb = new StringBuilder();
+		
+		for (String temp: className){
+			sb.append(temp + ";\r\n");
+		}
+		
+		return sb.toString();
+	}
+	
 	@Override
 	public String getClassHeader(String className) {
 		return "public class " + Utils.formatFileName(className) + "{";
 	}
 
 	@Override
+	public String getClassConstructor(String className) {
+		return "public " + Utils.formatFileName(className) + "(){}";
+	}
+
+	@Override
 	public String getByteVariable(String variable) {
-		return "private byte " + Utils.formatVariableName(variable) + " = 0;";
+		return "private byte " + Utils.formatVariableName(variable) + " = null;";
 	}
 
 	@Override
 	public String getShortVariable(String variable) {
-		return "private short " + Utils.formatVariableName(variable) + " = 0;";
+		return "private short " + Utils.formatVariableName(variable) + " = null;";
 	}
 
 	@Override
 	public String getIntVariable(String variable) {
-		return "private int " + Utils.formatVariableName(variable) + " = 0;";
+		return "private int " + Utils.formatVariableName(variable) + " = null;";
 	}
 
 	@Override
 	public String getLongVariable(String variable) {
-		return "private long " + Utils.formatVariableName(variable) + " = 0;";
+		return "private long " + Utils.formatVariableName(variable) + " = null;";
 	}
 
 	@Override
 	public String getFloatVariable(String variable) {
-		return "private float " + Utils.formatVariableName(variable) + " = 0;";
+		return "private float " + Utils.formatVariableName(variable) + " = null;";
 	}
 
 	@Override
 	public String getDoubleVariable(String variable) {
-		return "private double " + Utils.formatVariableName(variable) + " = 0;";
+		return "private double " + Utils.formatVariableName(variable) + " = null;";
 	}
 
 	@Override
 	public String getStringVariable(String variable) {
-		return "private String " + Utils.formatVariableName(variable) + " = \"\";";
+		return "private String " + Utils.formatVariableName(variable) + " = null;";
 	}
 
 	@Override

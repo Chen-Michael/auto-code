@@ -1,16 +1,18 @@
 package template;
 
 import java.sql.Types;
+import java.util.List;
 
 import jdbc.ColumnInfo;
 import jdbc.TableInfo;
-import other.Utils;
 
 public class Template {
-	public static String getPOJO(POJO pojo, String suffix, TableInfo tableInfo){
+	public static String getPOJO(POJO pojo, String pojoName, TableInfo tableInfo, List<String> importClass){
 		StringBuilder result = new StringBuilder();
 		
-		result.append(pojo.getClassHeader(tableInfo.getTableName() + suffix) + "\r\n");
+		result.append(pojo.getClassImport(importClass) + "\r\n");
+		result.append(pojo.getClassHeader(pojoName) + "\r\n");
+		result.append("\t" + pojo.getClassConstructor(pojoName) + "\r\n");
 		
 		for (ColumnInfo columnInfo: tableInfo.getColumns()){
 			switch (columnInfo.getType()){
@@ -87,8 +89,14 @@ public class Template {
 		return result.toString();
 	}
 	
-	public static String getDAO(){
+	public static String getDAO(DAO dao, String pojoName, String daoName, TableInfo tableInfo, List<String> importClass){
 		StringBuilder result = new StringBuilder();
+		
+		result.append(dao.getClassImport(importClass) + "\r\n");
+		result.append(dao.getClassHeader(daoName) + "\r\n");
+		result.append("\t" + dao.getClassConstructor(daoName) + "\r\n");
+		result.append("\t" + dao.getInsertMethod(pojoName, tableInfo) + "\r\n");
+		result.append(dao.getClassFooter());
 		
 		return result.toString();
 	}

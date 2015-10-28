@@ -14,8 +14,10 @@ import jdbc.DbMetaData;
 import jdbc.SchemaInfo;
 import jdbc.TableInfo;
 import other.Utils;
+import template.DAO;
 import template.POJO;
 import template.Template;
+import template.java.JavaDAO;
 import template.java.JavaPOJO;
 
 import javax.swing.GroupLayout;
@@ -171,15 +173,36 @@ public class Main extends JFrame {
 			    	}
 			    	
 			    	POJO pojo = new JavaPOJO();
+			    	DAO  dao  = new JavaDAO();
 			    	String fileSuffix = ".java";
 			    	String pojoSuffix = "Model";
+			    	String daoSuffix  = "DAO";
+			    	
+			    	String pojoName = "";
+			    	String daoName  = "";
+			    	
+			    	List<String> importName = new ArrayList<String>();
 			    	
 			    	for (SchemaInfo schema: selectedSchema){
 						for (TableInfo table: schema.getTables()){
-							if (selectedPOJO) WriteFile.write(
-													path + Utils.formatFileName(table.getTableName()) + pojoSuffix + fileSuffix, 
-													Template.getPOJO(pojo, pojoSuffix, table)
-												);
+							if (selectedPOJO){
+								pojoName = Utils.formatFileName(table.getTableName()) + pojoSuffix;
+								
+								WriteFile.write(
+									path + pojoName + fileSuffix, 
+									Template.getPOJO(pojo, pojoName, table, importName)
+								);
+							}
+									
+							if (selectedDAO){
+								pojoName = Utils.formatFileName(table.getTableName()) + pojoSuffix;
+								daoName  = Utils.formatFileName(table.getTableName()) + daoSuffix ;
+								
+								WriteFile.write(
+									path + daoName + fileSuffix, 
+									Template.getDAO(dao, pojoName, daoName, table, importName)
+								);
+							} 
 						}
 					}
 			    }

@@ -4,10 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
 
 public class DbMetaData {
 	private Connection conn = null;
@@ -32,7 +30,7 @@ public class DbMetaData {
 				List<ColumnInfo> columns = getColumnList  (schema, table);
 				List<String>     primary = getPrimaryList (schema, table);
 				List<String>     imported= getImportedList(schema, table);
-				
+
 				for (ColumnInfo column: columns){
 					if (primary. indexOf(column.getColumnName()) > -1) column.setPrimaryKey (true);
 					if (imported.indexOf(column.getColumnName()) > -1) column.setImportedKey(true);
@@ -93,7 +91,7 @@ public class DbMetaData {
 				}else {
 					columnInfo.setNullable(false);
 				}
-				
+
 				if ("YES".equals(rs.getString("IS_AUTOINCREMENT"))){
 					columnInfo.setAutoIncrement(true);
 				}else {

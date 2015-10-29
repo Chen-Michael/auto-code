@@ -1194,8 +1194,7 @@ public class JavaDAO implements DAO {
 				result.append("\t\t\t");
 				result.append("System.out.println(e.getMessage()); \r\n");
 				result.append("\t\t\t");
-				
-			result.append("\t\t");
+
 			result.append("} \r\n");
 			
 			result.append("\t\t");

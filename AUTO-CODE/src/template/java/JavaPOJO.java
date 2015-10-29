@@ -30,32 +30,32 @@ public class JavaPOJO implements POJO {
 
 	@Override
 	public String getByteVariable(String variable) {
-		return "private byte " + Utils.formatVariableName(variable) + " = null;";
+		return "private Byte " + Utils.formatVariableName(variable) + " = null;";
 	}
 
 	@Override
 	public String getShortVariable(String variable) {
-		return "private short " + Utils.formatVariableName(variable) + " = null;";
+		return "private Short " + Utils.formatVariableName(variable) + " = null;";
 	}
 
 	@Override
 	public String getIntVariable(String variable) {
-		return "private int " + Utils.formatVariableName(variable) + " = null;";
+		return "private Integer " + Utils.formatVariableName(variable) + " = null;";
 	}
 
 	@Override
 	public String getLongVariable(String variable) {
-		return "private long " + Utils.formatVariableName(variable) + " = null;";
+		return "private Long " + Utils.formatVariableName(variable) + " = null;";
 	}
 
 	@Override
 	public String getFloatVariable(String variable) {
-		return "private float " + Utils.formatVariableName(variable) + " = null;";
+		return "private Float " + Utils.formatVariableName(variable) + " = null;";
 	}
 
 	@Override
 	public String getDoubleVariable(String variable) {
-		return "private double " + Utils.formatVariableName(variable) + " = null;";
+		return "private Double " + Utils.formatVariableName(variable) + " = null;";
 	}
 
 	@Override
@@ -107,32 +107,32 @@ public class JavaPOJO implements POJO {
 
 	@Override
 	public String getByteGetters(String variable) {
-		return "public byte get" + Utils.formatFileName(variable) + "(){ return " + Utils.formatVariableName(variable) + ";}";
+		return "public Byte get" + Utils.formatFileName(variable) + "(){ return " + Utils.formatVariableName(variable) + ";}";
 	}
 
 	@Override
 	public String getShortGetters(String variable) {
-		return "public short get" + Utils.formatFileName(variable) + "(){ return " + Utils.formatVariableName(variable) + ";}";
+		return "public Short get" + Utils.formatFileName(variable) + "(){ return " + Utils.formatVariableName(variable) + ";}";
 	}
 
 	@Override
 	public String getIntGetters(String variable) {
-		return "public int get" + Utils.formatFileName(variable) + "(){ return " + Utils.formatVariableName(variable) + ";}";
+		return "public Integer get" + Utils.formatFileName(variable) + "(){ return " + Utils.formatVariableName(variable) + ";}";
 	}
 
 	@Override
 	public String getLongGetters(String variable) {
-		return "public long get" + Utils.formatFileName(variable) + "(){ return " + Utils.formatVariableName(variable) + ";}";
+		return "public Long get" + Utils.formatFileName(variable) + "(){ return " + Utils.formatVariableName(variable) + ";}";
 	}
 
 	@Override
 	public String getFloatGetters(String variable) {	
-		return "public float get" + Utils.formatFileName(variable) + "(){ return " + Utils.formatVariableName(variable) + ";}";
+		return "public Float get" + Utils.formatFileName(variable) + "(){ return " + Utils.formatVariableName(variable) + ";}";
 	}
 
 	@Override
 	public String getDoubleGetters(String variable) {	
-		return "public double get" + Utils.formatFileName(variable) + "(){ return " + Utils.formatVariableName(variable) + ";}";
+		return "public Double get" + Utils.formatFileName(variable) + "(){ return " + Utils.formatVariableName(variable) + ";}";
 	}
 
 	@Override

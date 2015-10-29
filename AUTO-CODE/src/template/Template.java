@@ -96,6 +96,9 @@ public class Template {
 		result.append(dao.getClassHeader(daoName) + "\r\n");
 		result.append("\t" + dao.getClassConstructor(daoName) + "\r\n");
 		result.append("\t" + dao.getInsertMethod(pojoName, tableInfo) + "\r\n");
+		result.append("\t" + dao.getUpdateMethod(pojoName, tableInfo) + "\r\n");
+		result.append("\t" + dao.getDeleteMethod(pojoName, tableInfo) + "\r\n");
+		result.append("\t" + dao.getSearchMethod(pojoName, tableInfo) + "\r\n");
 		result.append(dao.getClassFooter());
 		
 		return result.toString();

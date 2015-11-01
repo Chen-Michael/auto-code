@@ -14,9 +14,11 @@ import jdbc.DbMetaData;
 import jdbc.SchemaInfo;
 import jdbc.TableInfo;
 import other.Utils;
+import template.API;
 import template.DAO;
 import template.POJO;
 import template.Template;
+import template.java.JavaAPI;
 import template.java.JavaDAO;
 import template.java.JavaPOJO;
 
@@ -174,12 +176,15 @@ public class Main extends JFrame {
 			    	
 			    	POJO pojo = new JavaPOJO();
 			    	DAO  dao  = new JavaDAO();
+			    	API  api  = new JavaAPI();
 			    	String fileSuffix = ".java";
 			    	String pojoSuffix = "Model";
 			    	String daoSuffix  = "DAO";
+			    	String apiSuffix  = "API";
 			    	
 			    	String pojoName = "";
 			    	String daoName  = "";
+			    	String apiName  = "";
 			    	
 			    	List<String> importName = new ArrayList<String>();
 			    	
@@ -201,6 +206,17 @@ public class Main extends JFrame {
 								WriteFile.write(
 									path + daoName + fileSuffix, 
 									Template.getDAO(dao, pojoName, daoName, table, importName)
+								);
+							} 
+							
+							if (selectedAPI){
+								pojoName = Utils.formatFileName(table.getTableName()) + pojoSuffix;
+								daoName  = Utils.formatFileName(table.getTableName()) + daoSuffix ;
+								apiName  = Utils.formatFileName(table.getTableName()) + apiSuffix ;
+								
+								WriteFile.write(
+									path + apiName + fileSuffix, 
+									Template.getAPI(api, pojoName, daoName, apiName, table, importName)
 								);
 							} 
 						}

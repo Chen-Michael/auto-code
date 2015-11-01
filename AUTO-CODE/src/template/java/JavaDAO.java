@@ -13,16 +13,16 @@ public class JavaDAO implements DAO {
 
 	@Override
 	public String getClassImport(List<String> className) {
-		StringBuilder sb = new StringBuilder();
+		StringBuilder result = new StringBuilder();
 		
-		sb.append("import java.sql.*;\r\n");
-		sb.append("import java.util.*;\r\n");
+		result.append("import java.sql.*;\r\n");
+		result.append("import java.util.*;\r\n");
 		
 		for (String temp: className){
-			sb.append(temp + ";\r\n");
+			result.append(temp + ";\r\n");
 		}
 		
-		return sb.toString();
+		return result.toString();
 	}
 
 	@Override

@@ -62,9 +62,9 @@ public class JavaAPI implements API {
 		result.append("\t\t");
 		result.append("String result = \"\"; \r\n");
 		result.append("\t\t");
-		result.append("if (\"\".equals(result)){ \r\n");
-		result.append("\t\t\t");
 		result.append("result = dao.checkSearchPOJO(pojo);  \r\n");
+		result.append("\t\t");
+		result.append("if (\"\".equals(result)){ \r\n");
 		result.append("\t\t\t");
 		result.append("request.setAttribute(\"List\", dao.search(pojo, conn)); \r\n");
 		result.append("\t\t");

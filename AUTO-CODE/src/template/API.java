@@ -16,10 +16,6 @@ public interface API {
 	public String getDoDeleteMethod   (String pojoName, String daoName, TableInfo tableInfo);
 	
 	public String getPOJO             (String pojoName, TableInfo tableInfo);
-	public String checkInsertPOJO     (String pojoName, TableInfo tableInfo);
-	public String checkUpdatePOJO     (String pojoName, TableInfo tableInfo);
-	public String checkDeletePOJO     (String pojoName, TableInfo tableInfo);
-	public String checkSearchPOJO     (String pojoName, TableInfo tableInfo);
 	
 	public String getClassFooter      ();
 }

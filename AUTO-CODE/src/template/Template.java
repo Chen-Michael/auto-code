@@ -99,6 +99,10 @@ public class Template {
 		result.append("\t" + dao.getUpdateMethod(pojoName, tableInfo) + "\r\n");
 		result.append("\t" + dao.getDeleteMethod(pojoName, tableInfo) + "\r\n");
 		result.append("\t" + dao.getSearchMethod(pojoName, tableInfo) + "\r\n");
+		result.append("\t" + dao.checkInsertPOJO  (pojoName, tableInfo) + "\r\n");
+		result.append("\t" + dao.checkUpdatePOJO  (pojoName, tableInfo) + "\r\n");
+		result.append("\t" + dao.checkDeletePOJO  (pojoName, tableInfo) + "\r\n");
+		result.append("\t" + dao.checkSearchPOJO  (pojoName, tableInfo) + "\r\n");
 		result.append(dao.getClassFooter());
 		
 		return result.toString();
@@ -115,10 +119,6 @@ public class Template {
 		result.append("\t" + api.getDoPostMethod  (pojoName, daoName, tableInfo) + "\r\n");
 		result.append("\t" + api.getDoDeleteMethod(pojoName, daoName, tableInfo) + "\r\n");
 		result.append("\t" + api.getPOJO          (pojoName, tableInfo) + "\r\n");
-		result.append("\t" + api.checkInsertPOJO  (pojoName, tableInfo) + "\r\n");
-		result.append("\t" + api.checkUpdatePOJO  (pojoName, tableInfo) + "\r\n");
-		result.append("\t" + api.checkDeletePOJO  (pojoName, tableInfo) + "\r\n");
-		result.append("\t" + api.checkSearchPOJO  (pojoName, tableInfo) + "\r\n");
 		result.append(api.getClassFooter());
 		
 		return result.toString();

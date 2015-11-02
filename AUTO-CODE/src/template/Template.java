@@ -58,6 +58,12 @@ public class Template {
 				result.append("\t" + pojo.getStringGetters (columnInfo.getColumnName()) + "\r\n\r\n");
 				break;
 				
+			case Types.LONGVARCHAR:
+				result.append("\t" + pojo.getStringVariable(columnInfo.getColumnName()) + "\r\n");
+				result.append("\t" + pojo.getStringSetters (columnInfo.getColumnName()) + "\r\n");
+				result.append("\t" + pojo.getStringGetters (columnInfo.getColumnName()) + "\r\n\r\n");
+				break;
+				
 			case Types.CHAR:
 				result.append("\t" + pojo.getStringVariable(columnInfo.getColumnName()) + "\r\n");
 				result.append("\t" + pojo.getStringSetters (columnInfo.getColumnName()) + "\r\n");

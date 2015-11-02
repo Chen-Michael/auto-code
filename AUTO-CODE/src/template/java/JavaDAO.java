@@ -172,6 +172,21 @@ public class JavaDAO implements DAO {
 				prepared.append("} \r\n");
 				break;
 				
+			case Types.LONGVARCHAR:
+				prepared.append("\t\t\t");
+				prepared.append("String " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
+				prepared.append("\t\t\t");
+				prepared.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" == null){ \r\n");
+				prepared.append("\t\t\t\t");
+				prepared.append("preparedStatement.setNull(" + i +", java.sql.Types.VARCHAR); \r\n");
+				prepared.append("\t\t\t");
+				prepared.append("} else { \r\n");
+				prepared.append("\t\t\t\t");
+				prepared.append("preparedStatement.setString(" + i +", pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
+				prepared.append("\t\t\t");
+				prepared.append("} \r\n");
+				break;
+				
 			case Types.CHAR:
 				prepared.append("\t\t\t");
 				prepared.append("String " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
@@ -444,6 +459,21 @@ public class JavaDAO implements DAO {
 				prepared.append("} \r\n");
 				break;
 				
+			case Types.LONGVARCHAR:
+				prepared.append("\t\t\t");
+				prepared.append("String " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
+				prepared.append("\t\t\t");
+				prepared.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" == null){ \r\n");
+				prepared.append("\t\t\t\t");
+				prepared.append("preparedStatement.setNull(" + i +", java.sql.Types.VARCHAR); \r\n");
+				prepared.append("\t\t\t");
+				prepared.append("} else { \r\n");
+				prepared.append("\t\t\t\t");
+				prepared.append("preparedStatement.setString(" + i +", pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
+				prepared.append("\t\t\t");
+				prepared.append("} \r\n");
+				break;
+				
 			case Types.CHAR:
 				prepared.append("\t\t\t");
 				prepared.append("String " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
@@ -605,6 +635,21 @@ public class JavaDAO implements DAO {
 					break;
 					
 				case Types.VARCHAR:
+					prepared.append("\t\t\t");
+					prepared.append("String " + Utils.formatVariableName(primaryKeyName.get(j)) + " = pojo.get" + Utils.formatFileName(primaryKeyName.get(j)) + "(); \r\n");
+					prepared.append("\t\t\t");
+					prepared.append("if (" + Utils.formatVariableName(primaryKeyName.get(j)) +" == null){ \r\n");
+					prepared.append("\t\t\t\t");
+					prepared.append("preparedStatement.setNull(" + i +", java.sql.Types.VARCHAR); \r\n");
+					prepared.append("\t\t\t");
+					prepared.append("} else { \r\n");
+					prepared.append("\t\t\t\t");
+					prepared.append("preparedStatement.setString(" + i +", pojo.get" + Utils.formatFileName(primaryKeyName.get(j)) + "()); \r\n");
+					prepared.append("\t\t\t");
+					prepared.append("} \r\n");
+					break;
+					
+				case Types.LONGVARCHAR:
 					prepared.append("\t\t\t");
 					prepared.append("String " + Utils.formatVariableName(primaryKeyName.get(j)) + " = pojo.get" + Utils.formatFileName(primaryKeyName.get(j)) + "(); \r\n");
 					prepared.append("\t\t\t");
@@ -804,6 +849,15 @@ public class JavaDAO implements DAO {
 				break;
 				
 			case Types.VARCHAR:
+				prepared.append("\t\t\t");
+				prepared.append("if (pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "() != null){ \r\n");
+				prepared.append("\t\t\t\t");
+				prepared.append("preparedStatement.setString(" + i++ +", pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
+				prepared.append("\t\t\t");
+				prepared.append("} \r\n");
+				break;
+				
+			case Types.LONGVARCHAR:
 				prepared.append("\t\t\t");
 				prepared.append("if (pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "() != null){ \r\n");
 				prepared.append("\t\t\t\t");
@@ -1060,6 +1114,27 @@ public class JavaDAO implements DAO {
 				setters.append("obj.set" + Utils.formatFileName(columnInfo.getColumnName()) + "(rs.getString(\"" + columnInfo.getColumnName() + "\")); \r\n");
 				break;
 				
+			case Types.LONGVARCHAR:
+				column.append("\t\t\t");
+				column.append("String " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
+				column.append("\t\t\t");
+				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
+				column.append("\t\t\t\t");
+				column.append("sql.append(\" AND " + columnInfo.getColumnName() + " = ?\"); \r\n");
+				column.append("\t\t\t");
+				column.append("} \r\n");
+				
+				prepared.append("\t\t\t");
+				prepared.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
+				prepared.append("\t\t\t\t");
+				prepared.append("preparedStatement.setString(i++, pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
+				prepared.append("\t\t\t");
+				prepared.append("} \r\n");
+				
+				setters.append("\t\t\t\t");
+				setters.append("obj.set" + Utils.formatFileName(columnInfo.getColumnName()) + "(rs.getString(\"" + columnInfo.getColumnName() + "\")); \r\n");
+				break;
+				
 			case Types.CHAR:
 				column.append("\t\t\t");
 				column.append("String " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
@@ -1286,6 +1361,8 @@ public class JavaDAO implements DAO {
 				result.append("result = \"\"; \r\n");
 				result.append("\t\t\t");
 				result.append("hasImported = true; \r\n");
+				result.append("\t\t");
+				result.append("}");
 			}
 		}
 		

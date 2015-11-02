@@ -51,10 +51,10 @@ public class JavaDAO implements DAO {
 		
 		for (ColumnInfo columnInfo: tableInfo.getColumns()){
 			if (!columnInfo.isAutoIncrement()){
-				column.append(columnInfo.getColumnName());
+				column.append("`" + columnInfo.getColumnName() + "`");
 				column2.append("?");
 			} else if(columnInfo.isPrimaryKey()) {
-				autoIncrementName = columnInfo.getColumnName();
+				autoIncrementName = "`" + columnInfo.getColumnName() + "`";
 				isAutoIncrement = true;
 				autoIncrementType = columnInfo.getType();
 				size--;
@@ -345,13 +345,13 @@ public class JavaDAO implements DAO {
 		
 		for (ColumnInfo columnInfo: tableInfo.getColumns()){
 			if (columnInfo.isPrimaryKey()){
-				primaryKeyName.add(columnInfo.getColumnName());
+				primaryKeyName.add("`" + columnInfo.getColumnName() + "`");
 				primaryKeyType.add(columnInfo.getType());
 				continue;
 			}
 			
 			if (i > 1) column.append(", ");
-			column.append(columnInfo.getColumnName() + " = ?");
+			column.append("`" + columnInfo.getColumnName() + "` = ?");
 			
 			switch (columnInfo.getType()){
 			case Types.TINYINT:
@@ -541,7 +541,7 @@ public class JavaDAO implements DAO {
 		if (primaryKeyName.size() > 0){
 			for (int j = 0, len = primaryKeyType.size(); j < len; j++){
 				if (column2.length() > 0) column2.append(" AND ");
-				column2.append(primaryKeyName.get(j) + " = ?");
+				column2.append("`" + primaryKeyName.get(j) + "` = ?");
 				
 				switch (primaryKeyType.get(j)){
 				case Types.TINYINT:
@@ -791,7 +791,7 @@ public class JavaDAO implements DAO {
 			if (!columnInfo.isPrimaryKey() && !columnInfo.isImportedKey()) continue;
 
 			if (column.length() > 0) column.append(" AND ");
-			column.append(columnInfo.getColumnName() + " = ?");
+			column.append("`" + columnInfo.getColumnName() + "` = ?");
 			
 			switch (columnInfo.getType()){
 			case Types.TINYINT:
@@ -973,7 +973,7 @@ public class JavaDAO implements DAO {
 				column.append("\t\t\t");
 				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				column.append("\t\t\t\t");
-				column.append("sql.append(\" AND " + columnInfo.getColumnName() + " = ?\"); \r\n");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
 				column.append("\t\t\t");
 				column.append("} \r\n");
 				
@@ -994,7 +994,7 @@ public class JavaDAO implements DAO {
 				column.append("\t\t\t");
 				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				column.append("\t\t\t\t");
-				column.append("sql.append(\" AND " + columnInfo.getColumnName() + " = ?\"); \r\n");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
 				column.append("\t\t\t");
 				column.append("} \r\n");
 				
@@ -1015,7 +1015,7 @@ public class JavaDAO implements DAO {
 				column.append("\t\t\t");
 				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				column.append("\t\t\t\t");
-				column.append("sql.append(\" AND " + columnInfo.getColumnName() + " = ?\"); \r\n");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
 				column.append("\t\t\t");
 				column.append("} \r\n");
 				
@@ -1036,7 +1036,7 @@ public class JavaDAO implements DAO {
 				column.append("\t\t\t");
 				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				column.append("\t\t\t\t");
-				column.append("sql.append(\" AND " + columnInfo.getColumnName() + " = ?\"); \r\n");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
 				column.append("\t\t\t");
 				column.append("} \r\n");
 				
@@ -1057,7 +1057,7 @@ public class JavaDAO implements DAO {
 				column.append("\t\t\t");
 				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				column.append("\t\t\t\t");
-				column.append("sql.append(\" AND " + columnInfo.getColumnName() + " = ?\"); \r\n");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
 				column.append("\t\t\t");
 				column.append("} \r\n");
 				
@@ -1078,7 +1078,7 @@ public class JavaDAO implements DAO {
 				column.append("\t\t\t");
 				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				column.append("\t\t\t\t");
-				column.append("sql.append(\" AND " + columnInfo.getColumnName() + " = ?\"); \r\n");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
 				column.append("\t\t\t");
 				column.append("} \r\n");
 				
@@ -1099,7 +1099,7 @@ public class JavaDAO implements DAO {
 				column.append("\t\t\t");
 				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				column.append("\t\t\t\t");
-				column.append("sql.append(\" AND " + columnInfo.getColumnName() + " = ?\"); \r\n");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
 				column.append("\t\t\t");
 				column.append("} \r\n");
 				
@@ -1120,7 +1120,7 @@ public class JavaDAO implements DAO {
 				column.append("\t\t\t");
 				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				column.append("\t\t\t\t");
-				column.append("sql.append(\" AND " + columnInfo.getColumnName() + " = ?\"); \r\n");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
 				column.append("\t\t\t");
 				column.append("} \r\n");
 				
@@ -1141,7 +1141,7 @@ public class JavaDAO implements DAO {
 				column.append("\t\t\t");
 				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				column.append("\t\t\t\t");
-				column.append("sql.append(\" AND " + columnInfo.getColumnName() + " = ?\"); \r\n");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
 				column.append("\t\t\t");
 				column.append("} \r\n");
 				
@@ -1162,7 +1162,7 @@ public class JavaDAO implements DAO {
 				column.append("\t\t\t");
 				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				column.append("\t\t\t\t");
-				column.append("sql.append(\" AND " + columnInfo.getColumnName() + " = ?\"); \r\n");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
 				column.append("\t\t\t");
 				column.append("} \r\n");
 				
@@ -1183,7 +1183,7 @@ public class JavaDAO implements DAO {
 				column.append("\t\t\t");
 				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				column.append("\t\t\t\t");
-				column.append("sql.append(\" AND " + columnInfo.getColumnName() + " = ?\"); \r\n");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
 				column.append("\t\t\t");
 				column.append("} \r\n");
 				
@@ -1204,7 +1204,7 @@ public class JavaDAO implements DAO {
 				column.append("\t\t\t");
 				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				column.append("\t\t\t\t");
-				column.append("sql.append(\" AND " + columnInfo.getColumnName() + " = ?\"); \r\n");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
 				column.append("\t\t\t");
 				column.append("} \r\n");
 				

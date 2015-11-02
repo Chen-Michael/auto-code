@@ -1296,7 +1296,7 @@ public class JavaDAO implements DAO {
 		result.append("String result = \"\"; \r\n");
 		
 		for (ColumnInfo columnInfo: tableInfo.getColumns()){
-			if (columnInfo.isNullable() == false){
+			if (columnInfo.isNullable() == false && columnInfo.isAutoIncrement() == false){
 				result.append("\t\t");
 				result.append("if (pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "() == null) "
 						+ "result = \"The " + Utils.formatVariableName(columnInfo.getColumnName()) + " Is Null\"; \r\n");

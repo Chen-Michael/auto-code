@@ -60,7 +60,19 @@ public class JavaAPI implements API {
 		result.append("\t\t");
 		result.append(daoName  + " dao = new " + daoName + "(); \r\n");
 		result.append("\t\t");
+		result.append("String result = \"\"; \r\n");
+		result.append("\t\t");
+		result.append("if (\"\".equals(result)){ \r\n");
+		result.append("\t\t\t");
+		result.append("result = dao.checkSearchPOJO(pojo);  \r\n");
+		result.append("\t\t\t");
 		result.append("request.setAttribute(\"List\", dao.search(pojo, conn)); \r\n");
+		result.append("\t\t");
+		result.append("} else{ \r\n");
+		result.append("\t\t\t");
+		result.append("request.setAttribute(\"result\", result); \r\n");
+		result.append("\t\t");
+		result.append("} \r\n");
 		result.append("\t\t");
 		result.append("request.getRequestDispatcher(\"WEB-INF/" + tableInfo.getTableName() + ".jsp\").forward(request, response); \r\n");
 		result.append("\t");
@@ -102,7 +114,7 @@ public class JavaAPI implements API {
 			result.append("\t\t");
 			result.append("case \"insert\" :  \r\n");
 				result.append("\t\t\t");
-				result.append("result = checkInsertPOJO(pojo);  \r\n");
+				result.append("result = dao.checkInsertPOJO(pojo);  \r\n");
 				result.append("\t\t\t");
 				result.append("if (!\"\".equals(result)) break;  \r\n");
 				result.append("\t\t\t");
@@ -112,7 +124,7 @@ public class JavaAPI implements API {
 			result.append("\t\t");
 			result.append("case \"update\" :  \r\n");
 				result.append("\t\t\t");
-				result.append("result = checkUpdatePOJO(pojo);  \r\n");
+				result.append("result = dao.checkUpdatePOJO(pojo);  \r\n");
 				result.append("\t\t\t");
 				result.append("if (!\"\".equals(result)) break;  \r\n");
 				result.append("\t\t\t");
@@ -122,7 +134,7 @@ public class JavaAPI implements API {
 			result.append("\t\t");
 			result.append("case \"delete\" :  \r\n");
 				result.append("\t\t\t");
-				result.append("result = checkDeletePOJO(pojo);  \r\n");
+				result.append("result = dao.checkDeletePOJO(pojo);  \r\n");
 				result.append("\t\t\t");
 				result.append("if (!\"\".equals(result)) break;  \r\n");
 				result.append("\t\t\t");

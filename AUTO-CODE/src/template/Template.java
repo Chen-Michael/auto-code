@@ -104,8 +104,22 @@ public class Template {
 		return result.toString();
 	}
 	
-	public static String getAPI(){
+	public static String getAPI(API api, String pojoName, String daoName, String apiName, TableInfo tableInfo, List<String> importClass){
 		StringBuilder result = new StringBuilder();
+		
+		result.append(api.getClassImport(importClass) + "\r\n");
+		result.append(api.getClassHeader(apiName) + "\r\n");
+		result.append("\t" + api.getClassConstructor(apiName) + "\r\n");
+		result.append("\t" + api.getDoGetMethod   (pojoName, daoName, tableInfo) + "\r\n");
+		result.append("\t" + api.getDoPutMethod   (pojoName, daoName, tableInfo) + "\r\n");
+		result.append("\t" + api.getDoPostMethod  (pojoName, daoName, tableInfo) + "\r\n");
+		result.append("\t" + api.getDoDeleteMethod(pojoName, daoName, tableInfo) + "\r\n");
+		result.append("\t" + api.getPOJO          (pojoName, tableInfo) + "\r\n");
+		result.append("\t" + api.checkInsertPOJO  (pojoName, tableInfo) + "\r\n");
+		result.append("\t" + api.checkUpdatePOJO  (pojoName, tableInfo) + "\r\n");
+		result.append("\t" + api.checkDeletePOJO  (pojoName, tableInfo) + "\r\n");
+		result.append("\t" + api.checkSearchPOJO  (pojoName, tableInfo) + "\r\n");
+		result.append(api.getClassFooter());
 		
 		return result.toString();
 	}

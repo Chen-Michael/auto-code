@@ -54,7 +54,7 @@ public class JavaDAO implements DAO {
 				column.append("`" + columnInfo.getColumnName() + "`");
 				column2.append("?");
 			} else if(columnInfo.isPrimaryKey()) {
-				autoIncrementName = "`" + columnInfo.getColumnName() + "`";
+				autoIncrementName = columnInfo.getColumnName();
 				isAutoIncrement = true;
 				autoIncrementType = columnInfo.getType();
 				size--;
@@ -345,7 +345,7 @@ public class JavaDAO implements DAO {
 		
 		for (ColumnInfo columnInfo: tableInfo.getColumns()){
 			if (columnInfo.isPrimaryKey()){
-				primaryKeyName.add("`" + columnInfo.getColumnName() + "`");
+				primaryKeyName.add(columnInfo.getColumnName());
 				primaryKeyType.add(columnInfo.getType());
 				continue;
 			}

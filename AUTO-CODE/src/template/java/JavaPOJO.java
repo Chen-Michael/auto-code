@@ -66,37 +66,37 @@ public class JavaPOJO implements POJO {
 	@Override
 	public String getByteSetters(String variable) {
 		String variable2 = Utils.formatVariableName(variable);
-		return "public byte set" + Utils.formatFileName(variable) + "(byte " + variable2 + "){ this." + variable2 + " = " + variable2 + ";}";
+		return "public byte set" + Utils.formatFileName(variable) + "(Byte " + variable2 + "){ this." + variable2 + " = " + variable2 + ";}";
 	}
 
 	@Override
 	public String getShortSetters(String variable) {
 		String variable2 = Utils.formatVariableName(variable);
-		return "public void set" + Utils.formatFileName(variable) + "(short " + variable2 + "){ this." + variable2 + " = " + variable2 + ";}";
+		return "public void set" + Utils.formatFileName(variable) + "(Short " + variable2 + "){ this." + variable2 + " = " + variable2 + ";}";
 	}
 
 	@Override
 	public String getIntSetters(String variable) {
 		String variable2 = Utils.formatVariableName(variable);
-		return "public void set" + Utils.formatFileName(variable) + "(int " + variable2 + "){ this." + variable2 + " = " + variable2 + ";}";
+		return "public void set" + Utils.formatFileName(variable) + "(Integer " + variable2 + "){ this." + variable2 + " = " + variable2 + ";}";
 	}
 
 	@Override
 	public String getLongSetters(String variable) {
 		String variable2 = Utils.formatVariableName(variable);
-		return "public void set" + Utils.formatFileName(variable) + "(long " + variable2 + "){ this." + variable2 + " = " + variable2 + ";}";
+		return "public void set" + Utils.formatFileName(variable) + "(Long " + variable2 + "){ this." + variable2 + " = " + variable2 + ";}";
 	}
 
 	@Override
 	public String getFloatSetters(String variable) {
 		String variable2 = Utils.formatVariableName(variable);
-		return "public void set" + Utils.formatFileName(variable) + "(float " + variable2 + "){ this." + variable2 + " = " + variable2 + ";}";
+		return "public void set" + Utils.formatFileName(variable) + "(Float " + variable2 + "){ this." + variable2 + " = " + variable2 + ";}";
 	}
 
 	@Override
 	public String getDoubleSetters(String variable) {
 		String variable2 = Utils.formatVariableName(variable);
-		return "public void set" + Utils.formatFileName(variable) + "(double " + variable2 + "){ this." + variable2 + " = " + variable2 + ";}";
+		return "public void set" + Utils.formatFileName(variable) + "(Double " + variable2 + "){ this." + variable2 + " = " + variable2 + ";}";
 	}
 
 	@Override

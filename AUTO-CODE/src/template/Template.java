@@ -83,9 +83,9 @@ public class Template {
 				break;
 				
 			case Types.TIMESTAMP:
-				result.append("\t" + pojo.getLongVariable(columnInfo.getColumnName()) + "\r\n");
-				result.append("\t" + pojo.getLongSetters (columnInfo.getColumnName()) + "\r\n");
-				result.append("\t" + pojo.getLongGetters (columnInfo.getColumnName()) + "\r\n\r\n");
+				result.append("\t" + pojo.getStringVariable(columnInfo.getColumnName()) + "\r\n");
+				result.append("\t" + pojo.getStringSetters (columnInfo.getColumnName()) + "\r\n");
+				result.append("\t" + pojo.getStringGetters (columnInfo.getColumnName()) + "\r\n\r\n");
 				break;
 			}
 		}

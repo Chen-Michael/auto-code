@@ -298,20 +298,8 @@ public class JavaAPI implements API {
 				break;
 				
 			case Types.TIMESTAMP:
-				result.append("try{ \r\n");
-				
-					result.append("\t\t\t");
-					result.append("pojo.set" + Utils.formatFileName(columnInfo.getColumnName()) +
-							 "(Long.parseLong(request.getParameter(\"" + Utils.formatVariableName(columnInfo.getColumnName()) + "\"))); \r\n");
-				
-				result.append("\t\t");
-				result.append("} catch(Exception e){ \r\n");
-				
-					result.append("\t\t\t");
-					result.append("pojo.set" + Utils.formatFileName(columnInfo.getColumnName()) + "((Long) null); \r\n");
-				
-				result.append("\t\t");
-				result.append("} \r\n");
+				result.append("pojo.set" + Utils.formatFileName(columnInfo.getColumnName()) +
+						 "(request.getParameter(\"" + Utils.formatVariableName(columnInfo.getColumnName()) + "\")); \r\n");
 				break;
 			}
 		}

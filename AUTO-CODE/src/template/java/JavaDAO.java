@@ -234,15 +234,15 @@ public class JavaDAO implements DAO {
 				
 			case Types.TIMESTAMP:
 				prepared.append("\t\t\t");
-				prepared.append("Long " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
+				prepared.append("String " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" == null){ \r\n");
 				prepared.append("\t\t\t\t");
-				prepared.append("preparedStatement.setNull(" + i +", java.sql.Types.TIMESTAMP); \r\n");
+				prepared.append("preparedStatement.setNull(" + i +", java.sql.Types.VARCHAR); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("} else { \r\n");
 				prepared.append("\t\t\t\t");
-				prepared.append("preparedStatement.setLong(" + i +", pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
+				prepared.append("preparedStatement.setString(" + i +", pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("} \r\n");
 				break;
@@ -521,15 +521,15 @@ public class JavaDAO implements DAO {
 				
 			case Types.TIMESTAMP:
 				prepared.append("\t\t\t");
-				prepared.append("Long " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
+				prepared.append("String " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" == null){ \r\n");
 				prepared.append("\t\t\t\t");
-				prepared.append("preparedStatement.setNull(" + i +", java.sql.Types.TIMESTAMP); \r\n");
+				prepared.append("preparedStatement.setNull(" + i +", java.sql.Types.VARCHAR); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("} else { \r\n");
 				prepared.append("\t\t\t\t");
-				prepared.append("preparedStatement.setLong(" + i +", pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
+				prepared.append("preparedStatement.setString(" + i +", pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("} \r\n");
 				break;
@@ -711,15 +711,15 @@ public class JavaDAO implements DAO {
 					
 				case Types.TIMESTAMP:
 					prepared.append("\t\t\t");
-					prepared.append("Long " + Utils.formatVariableName(primaryKeyName.get(j)) + " = pojo.get" + Utils.formatFileName(primaryKeyName.get(j)) + "(); \r\n");
+					prepared.append("String " + Utils.formatVariableName(primaryKeyName.get(j)) + " = pojo.get" + Utils.formatFileName(primaryKeyName.get(j)) + "(); \r\n");
 					prepared.append("\t\t\t");
 					prepared.append("if (" + Utils.formatVariableName(primaryKeyName.get(j)) +" == null){ \r\n");
 					prepared.append("\t\t\t\t");
-					prepared.append("preparedStatement.setNull(" + i +", java.sql.Types.TIMESTAMP); \r\n");
+					prepared.append("preparedStatement.setNull(" + i +", java.sql.Types.VARCHAR); \r\n");
 					prepared.append("\t\t\t");
 					prepared.append("} else { \r\n");
 					prepared.append("\t\t\t\t");
-					prepared.append("preparedStatement.setLong(" + i +", pojo.get" + Utils.formatFileName(primaryKeyName.get(j)) + "()); \r\n");
+					prepared.append("preparedStatement.setString(" + i +", pojo.get" + Utils.formatFileName(primaryKeyName.get(j)) + "()); \r\n");
 					prepared.append("\t\t\t");
 					prepared.append("} \r\n");
 					break;
@@ -897,7 +897,7 @@ public class JavaDAO implements DAO {
 				prepared.append("\t\t\t");
 				prepared.append("if (pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "() != null){ \r\n");
 				prepared.append("\t\t\t\t");
-				prepared.append("preparedStatement.setLong(" + i++ +", pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
+				prepared.append("preparedStatement.setString(" + i++ +", pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("} \r\n");
 				break;
@@ -1200,7 +1200,7 @@ public class JavaDAO implements DAO {
 				
 			case Types.TIMESTAMP:
 				column.append("\t\t\t");
-				column.append("Long " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
+				column.append("String " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
 				column.append("\t\t\t");
 				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				column.append("\t\t\t\t");
@@ -1211,12 +1211,12 @@ public class JavaDAO implements DAO {
 				prepared.append("\t\t\t");
 				prepared.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				prepared.append("\t\t\t\t");
-				prepared.append("preparedStatement.setLong(i++, pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
+				prepared.append("preparedStatement.setString(i++, pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("} \r\n");
 				
 				setters.append("\t\t\t\t");
-				setters.append("obj.set" + Utils.formatFileName(columnInfo.getColumnName()) + "(rs.getLong(\"" + columnInfo.getColumnName() + "\")); \r\n");
+				setters.append("obj.set" + Utils.formatFileName(columnInfo.getColumnName()) + "(rs.getString(\"" + columnInfo.getColumnName() + "\")); \r\n");
 				break;
 			}
 			

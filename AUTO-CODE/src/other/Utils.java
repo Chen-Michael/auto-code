@@ -27,6 +27,8 @@ public class Utils {
 			}else{
 				result.append(str.toUpperCase().charAt(0) + str2.substring(1));
 			}
+			
+			i++;
 		}
 		
 		return result.toString();

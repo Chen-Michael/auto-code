@@ -27,9 +27,10 @@ public class DbMetaData {
 			List<TableInfo> tables = getTableList(schema);
 			
 			for (TableInfo table: tables){
-				List<ColumnInfo> columns = getColumnList  (schema, table);
-				List<String>     primary = getPrimaryList (schema, table);
-				List<String>     imported= getImportedList(schema, table);
+				List<ColumnInfo> columns  = getColumnList  (schema, table);
+				List<ColumnInfo> exported = getExportedList(schema, table);
+				List<String>     primary  = getPrimaryList (schema, table);
+				List<String>     imported = getImportedList(schema, table);
 
 				for (ColumnInfo column: columns){
 					if (primary. indexOf(column.getColumnName()) > -1) column.setPrimaryKey (true);
@@ -37,6 +38,7 @@ public class DbMetaData {
 				}
 				
 				table.setColumns(columns);
+				table.setExportedColumns(exported);
 			}
 			
 			schema.setTables(tables);
@@ -128,6 +130,23 @@ public class DbMetaData {
 			ResultSet rs = conn.getMetaData().getImportedKeys(schemaInfo.getScheamName(), null, tableInfo.getTableName());
 			while (rs.next()) {
 				result.add(rs.getString("FKCOLUMN_NAME"));
+			}	
+		} catch (SQLException e) {
+			System.out.println(e.toString());
+		}
+		
+		return result;
+	}
+	
+	public List<ColumnInfo> getExportedList(SchemaInfo schemaInfo, TableInfo tableInfo){
+		List<ColumnInfo> result = new ArrayList<ColumnInfo>();
+		
+		try {
+			ResultSet rs = conn.getMetaData().getExportedKeys(schemaInfo.getScheamName(), null, tableInfo.getTableName());
+			while (rs.next()) {
+				ColumnInfo obj = new ColumnInfo(rs.getString("FKCOLUMN_NAME"));
+				obj.setTableName(rs.getString("FKTABLE_NAME"));
+				result.add(obj);
 			}	
 		} catch (SQLException e) {
 			System.out.println(e.toString());

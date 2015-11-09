@@ -11,8 +11,9 @@ public class JavaPOJO implements POJO {
 	public String getClassImport(List<String> className) {
 		StringBuilder sb = new StringBuilder();
 		
+		sb.append("import java.util.*;\r\n");
 		for (String temp: className){
-			sb.append(temp + ";\r\n");
+			sb.append("import " + temp + ";\r\n");
 		}
 		
 		return sb.toString();
@@ -64,6 +65,12 @@ public class JavaPOJO implements POJO {
 	}
 
 	@Override
+	public String getModelVariable(String variable) {
+		String variable2 = Utils.formatFileName(variable);
+		return "private List<" + variable2 + "> " + Utils.formatVariableName(variable) + " = new ArrayList<" + variable2 + ">();";
+	}
+
+	@Override
 	public String getByteSetters(String variable) {
 		String variable2 = Utils.formatVariableName(variable);
 		return "public byte set" + Utils.formatFileName(variable) + "(Byte " + variable2 + "){ this." + variable2 + " = " + variable2 + ";}";
@@ -106,6 +113,20 @@ public class JavaPOJO implements POJO {
 	}
 
 	@Override
+	public String getModelSetters(String variable) {
+		variable = Utils.formatVariableName(variable);
+		String variable2 = Utils.formatFileName(variable);
+		return "public void set" + variable2 + "(List<" + variable2 + "> " + variable + "){ this." + variable + " = " + variable + ";}";
+	}
+	
+	@Override
+	public String getModelAdd(String variable) {
+		variable = Utils.formatVariableName(variable);
+		String variable2 = Utils.formatFileName(variable);
+		return "public void add" + variable2 + "(" + variable2 + " " + variable + "){ this." + variable + ".add(" + variable + ");}";
+	}
+
+	@Override
 	public String getByteGetters(String variable) {
 		return "public Byte get" + Utils.formatFileName(variable) + "(){ return " + Utils.formatVariableName(variable) + ";}";
 	}
@@ -138,6 +159,12 @@ public class JavaPOJO implements POJO {
 	@Override
 	public String getStringGetters(String variable) {	
 		return "public String get" + Utils.formatFileName(variable) + "(){ return " + Utils.formatVariableName(variable) + ";}";
+	}
+
+	@Override
+	public String getModelGetters(String variable) {
+		String variable2 = Utils.formatFileName(variable);
+		return "public List<" + variable2 + "> get" + variable2 + "(){ return " + Utils.formatVariableName(variable) + ";}";
 	}
 
 	@Override

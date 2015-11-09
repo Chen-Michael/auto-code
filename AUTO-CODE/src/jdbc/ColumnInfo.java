@@ -6,6 +6,7 @@ public class ColumnInfo implements Cloneable {
 	private boolean importedKey   = false;
 	private boolean nullable      = false;
 	private boolean index         = false;
+	private String  tableName     = "";
 	private String  columnName    = "";
 	private String  defaultValue  = "";
 	private int     size          = 0;
@@ -54,6 +55,14 @@ public class ColumnInfo implements Cloneable {
 
 	public void setIndex(boolean index) {
 		this.index = index;
+	}
+
+	public String getTableName() {
+		return tableName;
+	}
+
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
 	}
 
 	public String getColumnName() {

@@ -90,6 +90,13 @@ public class Template {
 			}
 		}
 		
+		for (ColumnInfo columnInfo: tableInfo.getExportedColumns()){
+			result.append("\t" + pojo.getModelVariable(columnInfo.getTableName()) + "\r\n");
+			result.append("\t" + pojo.getModelSetters (columnInfo.getTableName()) + "\r\n");
+			result.append("\t" + pojo.getModelAdd     (columnInfo.getTableName()) + "\r\n");
+			result.append("\t" + pojo.getModelGetters (columnInfo.getTableName()) + "\r\n\r\n");
+		}
+		
 		result.append(pojo.getClassFooter());
 		
 		return result.toString();

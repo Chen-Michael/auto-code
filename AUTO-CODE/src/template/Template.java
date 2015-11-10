@@ -7,7 +7,7 @@ import jdbc.ColumnInfo;
 import jdbc.TableInfo;
 
 public class Template {
-	public static String getPOJO(POJO pojo, String pojoName, TableInfo tableInfo, List<String> importClass){
+	public static String getPOJO(POJO pojo, String pojoName, TableInfo tableInfo, List<String> importClass, String pojoSuffix){
 		StringBuilder result = new StringBuilder();
 		
 		result.append(pojo.getClassImport(importClass) + "\r\n");
@@ -91,10 +91,10 @@ public class Template {
 		}
 		
 		for (ColumnInfo columnInfo: tableInfo.getExportedColumns()){
-			result.append("\t" + pojo.getModelVariable(columnInfo.getTableName()) + "\r\n");
-			result.append("\t" + pojo.getModelSetters (columnInfo.getTableName()) + "\r\n");
-			result.append("\t" + pojo.getModelAdd     (columnInfo.getTableName()) + "\r\n");
-			result.append("\t" + pojo.getModelGetters (columnInfo.getTableName()) + "\r\n\r\n");
+			result.append("\t" + pojo.getModelVariable(columnInfo.getTableName(), pojoSuffix)  + "\r\n");
+			result.append("\t" + pojo.getModelSetters (columnInfo.getTableName(), pojoSuffix)  + "\r\n");
+			result.append("\t" + pojo.getModelAdd     (columnInfo.getTableName(), pojoSuffix)  + "\r\n");
+			result.append("\t" + pojo.getModelGetters (columnInfo.getTableName(), pojoSuffix) + "\r\n\r\n");
 		}
 		
 		result.append(pojo.getClassFooter());
@@ -102,20 +102,21 @@ public class Template {
 		return result.toString();
 	}
 	
-	public static String getDAO(DAO dao, String pojoName, String daoName, TableInfo tableInfo, List<String> importClass){
+	public static String getDAO(DAO dao, String pojoName, String daoName, TableInfo tableInfo, List<String> importClass, String pojoSuffix, String daoSuffix){
 		StringBuilder result = new StringBuilder();
 		
 		result.append(dao.getClassImport(importClass) + "\r\n");
 		result.append(dao.getClassHeader(daoName) + "\r\n");
 		result.append("\t" + dao.getClassConstructor(daoName) + "\r\n");
-		result.append("\t" + dao.getInsertMethod(pojoName, tableInfo) + "\r\n");
-		result.append("\t" + dao.getUpdateMethod(pojoName, tableInfo) + "\r\n");
-		result.append("\t" + dao.getDeleteMethod(pojoName, tableInfo) + "\r\n");
-		result.append("\t" + dao.getSearchMethod(pojoName, tableInfo) + "\r\n");
-		result.append("\t" + dao.checkInsertPOJO  (pojoName, tableInfo) + "\r\n");
-		result.append("\t" + dao.checkUpdatePOJO  (pojoName, tableInfo) + "\r\n");
-		result.append("\t" + dao.checkDeletePOJO  (pojoName, tableInfo) + "\r\n");
-		result.append("\t" + dao.checkSearchPOJO  (pojoName, tableInfo) + "\r\n");
+		result.append("\t" + dao.getInsertMethod          (pojoName, tableInfo) + "\r\n");
+		result.append("\t" + dao.getUpdateMethod          (pojoName, tableInfo) + "\r\n");
+		result.append("\t" + dao.getDeleteMethod          (pojoName, tableInfo) + "\r\n");
+		result.append("\t" + dao.getSearchMethod          (pojoName, tableInfo) + "\r\n");
+		result.append("\t" + dao.getRelationalSearchMethod(pojoName, tableInfo, pojoSuffix, daoSuffix) + "\r\n");
+		result.append("\t" + dao.checkInsertPOJO          (pojoName, tableInfo) + "\r\n");
+		result.append("\t" + dao.checkUpdatePOJO          (pojoName, tableInfo) + "\r\n");
+		result.append("\t" + dao.checkDeletePOJO          (pojoName, tableInfo) + "\r\n");
+		result.append("\t" + dao.checkSearchPOJO          (pojoName, tableInfo) + "\r\n");
 		result.append(dao.getClassFooter());
 		
 		return result.toString();

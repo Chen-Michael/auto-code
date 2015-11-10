@@ -1,16 +1,17 @@
 package jdbc;
 
 public class ColumnInfo implements Cloneable {
-	private boolean autoIncrement = false;
-	private boolean primaryKey    = false;
-	private boolean importedKey   = false;
-	private boolean nullable      = false;
-	private boolean index         = false;
-	private String  tableName     = "";
-	private String  columnName    = "";
-	private String  defaultValue  = "";
-	private int     size          = 0;
-	private int     type          = 0;
+	private boolean autoIncrement      = false;
+	private boolean primaryKey         = false;
+	private boolean importedKey        = false;
+	private boolean nullable           = false;
+	private boolean index              = false;
+	private String  tableName          = "";
+	private String  columnName         = "";
+	private String  exportedColumnName = "";
+	private String  defaultValue       = "";
+	private int     size               = 0;
+	private int     type               = 0;
 
 	public ColumnInfo(String columnName) {
 		super();
@@ -71,6 +72,14 @@ public class ColumnInfo implements Cloneable {
 
 	public void setColumnName(String columnName) {
 		this.columnName = columnName;
+	}
+
+	public String getExportedColumnName() {
+		return exportedColumnName;
+	}
+
+	public void setExportedColumnName(String exportedColumnName) {
+		this.exportedColumnName = exportedColumnName;
 	}
 
 	public String getDefaultValue() {

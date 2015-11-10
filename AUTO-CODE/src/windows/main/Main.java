@@ -195,7 +195,7 @@ public class Main extends JFrame {
 								
 								WriteFile.write(
 									path + pojoName + fileSuffix, 
-									Template.getPOJO(pojo, pojoName, table, importName)
+									Template.getPOJO(pojo, pojoName, table, importName, pojoSuffix)
 								);
 							}
 									
@@ -205,7 +205,7 @@ public class Main extends JFrame {
 								
 								WriteFile.write(
 									path + daoName + fileSuffix, 
-									Template.getDAO(dao, pojoName, daoName, table, importName)
+									Template.getDAO(dao, pojoName, daoName, table, importName, pojoSuffix, daoSuffix)
 								);
 							} 
 							

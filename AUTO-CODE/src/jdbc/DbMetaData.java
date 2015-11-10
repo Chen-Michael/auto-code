@@ -39,6 +39,7 @@ public class DbMetaData {
 				
 				table.setColumns(columns);
 				table.setExportedColumns(exported);
+				table.setImportedCount(imported.size());
 			}
 			
 			schema.setTables(tables);
@@ -145,7 +146,8 @@ public class DbMetaData {
 			ResultSet rs = conn.getMetaData().getExportedKeys(schemaInfo.getScheamName(), null, tableInfo.getTableName());
 			while (rs.next()) {
 				ColumnInfo obj = new ColumnInfo(rs.getString("FKCOLUMN_NAME"));
-				obj.setTableName(rs.getString("FKTABLE_NAME"));
+				obj.setTableName         (rs.getString("FKTABLE_NAME"));
+				obj.setExportedColumnName(rs.getString("PKCOLUMN_NAME"));
 				result.add(obj);
 			}	
 		} catch (SQLException e) {

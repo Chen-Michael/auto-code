@@ -957,9 +957,9 @@ public class JavaDAO implements DAO {
 
 	@Override
 	public String getSearchMethod(String pojoName, TableInfo tableInfo) {
-		StringBuilder result    = new StringBuilder();
-		StringBuilder column    = new StringBuilder();
-		StringBuilder prepared  = new StringBuilder();
+		StringBuilder result   = new StringBuilder();
+		StringBuilder column   = new StringBuilder();
+		StringBuilder prepared = new StringBuilder();
 		StringBuilder setters  = new StringBuilder();
 		String sql = "";
 		
@@ -1268,10 +1268,75 @@ public class JavaDAO implements DAO {
 			
 				result.append("\t\t\t");
 				result.append("System.out.println(e.getMessage()); \r\n");
-				result.append("\t\t\t");
-
+				
+			result.append("\t\t");
 			result.append("} \r\n");
 			
+			result.append("\t\t");
+			result.append("return result; \r\n");
+		
+		result.append("\t");
+		result.append("}");
+		
+		return result.toString();
+	}
+
+	@Override
+	public String getRelationalSearchMethod(String pojoName, TableInfo tableInfo, String pojoSuffix, String daoSuffix) {
+		StringBuilder result   = new StringBuilder();
+		StringBuilder column   = new StringBuilder();
+		StringBuilder prepared = new StringBuilder();
+		StringBuilder setters  = new StringBuilder();
+		
+		result.append("public List<" + pojoName + "> relationalSearch(" + pojoName + " pojo, Connection conn){ \r\n");
+			
+			result.append("\t\t");
+			result.append("boolean firstSearch = false; \r\n");
+			result.append("\t\t");
+			result.append("List<" + pojoName + "> result = new ArrayList<" + pojoName + ">(); \r\n\r\n");
+			
+			if (tableInfo.getExportedCount() == 0){
+				result.append("\t\t");
+				result.append("result = search(pojo, conn); \r\n");
+			} else{
+				for (ColumnInfo columnInfo: tableInfo.getColumns()){
+					result.append("\t\t");
+					result.append("if (pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "() != null) firstSearch = true; \r\n");
+				}
+				result.append("\r\n");
+				result.append("\t\t");
+				result.append("if (firstSearch){ \r\n");
+				
+					result.append("\t\t\t");
+					result.append("result = search(pojo, conn); \r\n");
+					result.append("\t\t\t");
+					result.append("for (" + pojoName + " pojo2: result){ \r\n");
+						
+						int i = 1;
+						for (ColumnInfo columnInfo: tableInfo.getExportedColumns()){
+							String name = Utils.formatFileName(columnInfo.getTableName());
+							
+							result.append("\t\t\t\t");
+							result.append(name + daoSuffix + " dao" + i + " = new " + name + daoSuffix + "(); \r\n");
+							result.append("\t\t\t\t");
+							result.append("for (" + name + pojoSuffix + " pojo3 :pojo.get" + name + "()){ \r\n");
+								
+								result.append("\t\t\t\t\t");
+								result.append("pojo3.set" + Utils.formatFileName(columnInfo.getColumnName()) + "(pojo2.get" + Utils.formatFileName(columnInfo.getExportedColumnName()) + "()); \r\n");
+								result.append("\t\t\t\t\t");
+								result.append("pojo2.set" + name + "(dao" + (i++) + ".relationalSearch(pojo3, conn)); \r\n");
+							
+							result.append("\t\t\t\t");
+							result.append("} \r\n");
+						}
+					
+					result.append("\t\t\t");
+					result.append("} \r\n");
+					
+				result.append("\t\t");
+				result.append("} \r\n");
+			}
+
 			result.append("\t\t");
 			result.append("return result; \r\n");
 		

@@ -7,7 +7,9 @@ import java.util.List;
 public class TableInfo implements Cloneable {
 	private String schemaName = "";
 	private String tableName  = "";
-	private List<ColumnInfo> columns = new ArrayList<ColumnInfo>(); 
+	private int importedCount = 0;
+	private int exportedCount = 0;
+	private List<ColumnInfo> columns         = new ArrayList<ColumnInfo>(); 
 	private List<ColumnInfo> exportedColumns = new ArrayList<ColumnInfo>(); 
 
 	public TableInfo(String tableName) {
@@ -34,6 +36,18 @@ public class TableInfo implements Cloneable {
 	public List<ColumnInfo> getColumns() {
 		return columns;
 	}
+	
+	public int getImportedCount() {
+		return importedCount;
+	}
+
+	public void setImportedCount(int importedCount) {
+		this.importedCount = importedCount;
+	}
+
+	public int getExportedCount() {
+		return exportedCount;
+	}
 
 	public void setColumns(List<ColumnInfo> columns) {
 		this.columns = columns;
@@ -45,6 +59,7 @@ public class TableInfo implements Cloneable {
 
 	public void setExportedColumns(List<ColumnInfo> exportedColumns) {
 		this.exportedColumns = exportedColumns;
+		this.exportedCount   = exportedColumns.size();
 	}
 	
 	public Object clone() throws CloneNotSupportedException {

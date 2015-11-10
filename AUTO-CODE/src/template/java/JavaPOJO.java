@@ -65,9 +65,9 @@ public class JavaPOJO implements POJO {
 	}
 
 	@Override
-	public String getModelVariable(String variable) {
+	public String getModelVariable(String variable, String pojoSuffix) {
 		String variable2 = Utils.formatFileName(variable);
-		return "private List<" + variable2 + "> " + Utils.formatVariableName(variable) + " = new ArrayList<" + variable2 + ">();";
+		return "private List<" + variable2 + pojoSuffix + "> " + Utils.formatVariableName(variable) + " = new ArrayList<" + variable2 + pojoSuffix + ">();";
 	}
 
 	@Override
@@ -113,17 +113,17 @@ public class JavaPOJO implements POJO {
 	}
 
 	@Override
-	public String getModelSetters(String variable) {
+	public String getModelSetters(String variable, String pojoSuffix) {
 		variable = Utils.formatVariableName(variable);
 		String variable2 = Utils.formatFileName(variable);
-		return "public void set" + variable2 + "(List<" + variable2 + "> " + variable + "){ this." + variable + " = " + variable + ";}";
+		return "public void set" + variable2 + "(List<" + variable2 + pojoSuffix + "> " + variable + "){ this." + variable + " = " + variable + ";}";
 	}
 	
 	@Override
-	public String getModelAdd(String variable) {
+	public String getModelAdd(String variable, String pojoSuffix) {
 		variable = Utils.formatVariableName(variable);
 		String variable2 = Utils.formatFileName(variable);
-		return "public void add" + variable2 + "(" + variable2 + " " + variable + "){ this." + variable + ".add(" + variable + ");}";
+		return "public void add" + variable2 + "(" + variable2 + pojoSuffix + " " + variable + "){ this." + variable + ".add(" + variable + ");}";
 	}
 
 	@Override
@@ -162,9 +162,9 @@ public class JavaPOJO implements POJO {
 	}
 
 	@Override
-	public String getModelGetters(String variable) {
+	public String getModelGetters(String variable, String pojoSuffix) {
 		String variable2 = Utils.formatFileName(variable);
-		return "public List<" + variable2 + "> get" + variable2 + "(){ return " + Utils.formatVariableName(variable) + ";}";
+		return "public List<" + variable2 + pojoSuffix + "> get" + variable2 + "(){ return " + Utils.formatVariableName(variable) + ";}";
 	}
 
 	@Override

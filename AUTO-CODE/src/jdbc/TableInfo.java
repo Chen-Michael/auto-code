@@ -62,6 +62,24 @@ public class TableInfo implements Cloneable {
 		this.exportedCount   = exportedColumns.size();
 	}
 	
+	public List<ColumnInfo> getImportedColumns(){
+		List<ColumnInfo> result = new ArrayList<ColumnInfo>();
+		for (ColumnInfo columnInfo: columns){
+			if (columnInfo.isImportedKey()) result.add(columnInfo);
+		}
+		
+		return result;
+	}
+	
+	public List<ColumnInfo> getPrimaryColumns(){
+		List<ColumnInfo> result = new ArrayList<ColumnInfo>();
+		for (ColumnInfo columnInfo: columns){
+			if (columnInfo.isPrimaryKey()) result.add(columnInfo);
+		}
+		
+		return result;
+	}
+	
 	public Object clone() throws CloneNotSupportedException {
 		TableInfo tableInfo = (TableInfo) super.clone();
 		

@@ -4,8 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 public class DbMetaData {
 	private Connection conn = null;
@@ -27,14 +26,18 @@ public class DbMetaData {
 			List<TableInfo> tables = getTableList(schema);
 			
 			for (TableInfo table: tables){
-				List<ColumnInfo> columns  = getColumnList  (schema, table);
-				List<ColumnInfo> exported = getExportedList(schema, table);
-				List<String>     primary  = getPrimaryList (schema, table);
-				List<String>     imported = getImportedList(schema, table);
+				List<ColumnInfo>          columns  = getColumnList  (schema, table);
+				List<ColumnInfo>          exported = getExportedList(schema, table);
+				List<String>              primary  = getPrimaryList (schema, table);
+				Map<String, List<String>> imported = getImportedList(schema, table);
 
 				for (ColumnInfo column: columns){
 					if (primary. indexOf(column.getColumnName()) > -1) column.setPrimaryKey (true);
-					if (imported.indexOf(column.getColumnName()) > -1) column.setImportedKey(true);
+					if (imported.containsKey(column.getColumnName())){
+						column.setImportedKey(true);
+						column.setTableName(imported.get(column.getColumnName()).get(0));
+						column.setExportedColumnName(imported.get(column.getColumnName()).get(1));
+					}
 				}
 				
 				table.setColumns(columns);
@@ -124,13 +127,16 @@ public class DbMetaData {
 		return result;
 	}
 	
-	public List<String> getImportedList(SchemaInfo schemaInfo, TableInfo tableInfo){
-		List<String> result = new ArrayList<String>();
+	public Map<String, List<String>> getImportedList(SchemaInfo schemaInfo, TableInfo tableInfo){
+		Map<String, List<String>> result = new HashMap();
 		
 		try {
 			ResultSet rs = conn.getMetaData().getImportedKeys(schemaInfo.getScheamName(), null, tableInfo.getTableName());
 			while (rs.next()) {
-				result.add(rs.getString("FKCOLUMN_NAME"));
+				List<String> obj = new ArrayList<String>();
+				obj.add(rs.getString("PKTABLE_NAME"));
+				obj.add(rs.getString("PKCOLUMN_NAME"));
+				result.put(rs.getString("FKCOLUMN_NAME"), obj);
 			}	
 		} catch (SQLException e) {
 			System.out.println(e.toString());

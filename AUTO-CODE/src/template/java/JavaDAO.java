@@ -1282,7 +1282,7 @@ public class JavaDAO implements DAO {
 	}
 
 	@Override
-	public String getRelationalSearchMethod(String pojoName, TableInfo tableInfo, String pojoSuffix, String daoSuffix) {
+	public String getOuterSearchMethod(String pojoName, TableInfo tableInfo, String pojoSuffix, String daoSuffix) {
 		StringBuilder result   = new StringBuilder();
 		StringBuilder column   = new StringBuilder();
 		StringBuilder prepared = new StringBuilder();
@@ -1291,24 +1291,49 @@ public class JavaDAO implements DAO {
 		result.append("public List<" + pojoName + "> relationalSearch(" + pojoName + " pojo, Connection conn){ \r\n");
 			
 			result.append("\t\t");
-			result.append("boolean firstSearch = false; \r\n");
-			result.append("\t\t");
 			result.append("List<" + pojoName + "> result = new ArrayList<" + pojoName + ">(); \r\n\r\n");
 			
-			if (tableInfo.getExportedCount() == 0){
+			result.append("\r\n");
+			result.append("\t\t");
+			
 				result.append("\t\t");
 				result.append("result = search(pojo, conn); \r\n");
-			} else{
-				for (ColumnInfo columnInfo: tableInfo.getColumns()){
-					result.append("\t\t");
-					result.append("if (pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "() != null) firstSearch = true; \r\n");
-				}
-				result.append("\r\n");
-				result.append("\t\t");
-				result.append("if (firstSearch){ \r\n");
+			
+				if (tableInfo.getImportedCount() > 1){					
+					int i = 1;
+					for (ColumnInfo columnInfo: tableInfo.getImportedColumns()){
+						String name = Utils.formatFileName(columnInfo.getTableName());
+						
+						result.append("\r\n");
+						result.append("\t\t");
+						result.append("if (pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "() == null){ \r\n");
+							
+							
+							
+							result.append("\t\t\t");
+							result.append(name + daoSuffix  + " dao"  + i + " = new " + name + daoSuffix  + "(); \r\n");
+							result.append("\t\t\t");
+							result.append(name + pojoSuffix + " pojo" + i + " = new " + name + pojoSuffix + "(); \r\n");
+							
+							result.append("\t\t\t");
+							result.append("for (" + pojoName + " model: result){ \r\n");
+							
+								result.append("\t\t\t\t");
+								result.append("pojo" + i + ".set" + Utils.formatFileName(columnInfo.getExportedColumnName()) + "(model.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
+								result.append("\t\t\t\t");
+								result.append("model.set" + name + "(dao" + i + ".search(pojo" + i + ", conn)); \r\n");
+								
+							result.append("\t\t\t");
+							result.append("} \r\n");
+	
+						result.append("\t\t");
+						result.append("} \r\n");
+						
+						i++;
+					}
+				} 
 				
-					result.append("\t\t\t");
-					result.append("result = search(pojo, conn); \r\n");
+				if (tableInfo.getExportedCount() > 0){
 					result.append("\t\t\t");
 					result.append("for (" + pojoName + " pojo2: result){ \r\n");
 						
@@ -1332,10 +1357,7 @@ public class JavaDAO implements DAO {
 					
 					result.append("\t\t\t");
 					result.append("} \r\n");
-					
-				result.append("\t\t");
-				result.append("} \r\n");
-			}
+				}
 
 			result.append("\t\t");
 			result.append("return result; \r\n");

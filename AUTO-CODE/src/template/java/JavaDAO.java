@@ -1288,7 +1288,7 @@ public class JavaDAO implements DAO {
 		StringBuilder prepared = new StringBuilder();
 		StringBuilder setters  = new StringBuilder();
 		
-		result.append("public List<" + pojoName + "> relationalSearch(" + pojoName + " pojo, Connection conn){ \r\n");
+		result.append("public List<" + pojoName + "> outerSearch(" + pojoName + " pojo, Connection conn){ \r\n");
 			
 			result.append("\t\t");
 			result.append("List<" + pojoName + "> result = new ArrayList<" + pojoName + ">(); \r\n\r\n");
@@ -1349,7 +1349,7 @@ public class JavaDAO implements DAO {
 								result.append("\t\t\t\t\t");
 								result.append("pojo3.set" + Utils.formatFileName(columnInfo.getColumnName()) + "(pojo2.get" + Utils.formatFileName(columnInfo.getExportedColumnName()) + "()); \r\n");
 								result.append("\t\t\t\t\t");
-								result.append("pojo2.set" + name + "(dao" + (i++) + ".relationalSearch(pojo3, conn)); \r\n");
+								result.append("pojo2.set" + name + "(dao" + (i++) + ".outerSearch(pojo3, conn)); \r\n");
 							
 							result.append("\t\t\t\t");
 							result.append("} \r\n");

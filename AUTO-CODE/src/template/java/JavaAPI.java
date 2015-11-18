@@ -243,7 +243,7 @@ public class JavaAPI implements API {
 				result.append("} \r\n");
 				break;
 				
-			case Types.FLOAT:
+			case Types.REAL:
 				result.append("try{ \r\n");
 				
 					result.append("\t\t\t");

@@ -73,7 +73,7 @@ public class JavaPOJO implements POJO {
 	@Override
 	public String getByteSetters(String variable) {
 		String variable2 = Utils.formatVariableName(variable);
-		return "public byte set" + Utils.formatFileName(variable) + "(Byte " + variable2 + "){ this." + variable2 + " = " + variable2 + ";}";
+		return "public void set" + Utils.formatFileName(variable) + "(Byte " + variable2 + "){ this." + variable2 + " = " + variable2 + ";}";
 	}
 
 	@Override

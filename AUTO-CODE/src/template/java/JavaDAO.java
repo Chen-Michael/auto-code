@@ -12,13 +12,13 @@ import template.DAO;
 public class JavaDAO implements DAO {
 
 	@Override
-	public String getClassImport(List<String> className) {
+	public String getClassImport(List<String> importClass) {
 		StringBuilder result = new StringBuilder();
 		
 		result.append("import java.sql.*;\r\n");
 		result.append("import java.util.*;\r\n");
 		
-		for (String temp: className){
+		for (String temp: importClass){
 			result.append(temp + ";\r\n");
 		}
 		
@@ -33,6 +33,17 @@ public class JavaDAO implements DAO {
 	@Override
 	public String getClassConstructor(String className) {
 		return "public " + Utils.formatFileName(className) + "(){}";
+	}
+	
+	@Override
+	public String getVariable(List<String> variables) {
+		StringBuilder result = new StringBuilder();
+		
+		for (String temp: variables){
+			result.append(temp + ";\r\n");
+		}
+		
+		return result.toString();
 	}
 
 	@Override
@@ -127,13 +138,13 @@ public class JavaDAO implements DAO {
 				prepared.append("} \r\n");
 				break;
 				
-			case Types.FLOAT:
+			case Types.REAL:
 				prepared.append("\t\t\t");
 				prepared.append("Float " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" == null){ \r\n");
 				prepared.append("\t\t\t\t");
-				prepared.append("preparedStatement.setNull(" + i +", java.sql.Types.FLOAT); \r\n");
+				prepared.append("preparedStatement.setNull(" + i +", java.sql.Types.REAL); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("} else { \r\n");
 				prepared.append("\t\t\t\t");
@@ -414,13 +425,13 @@ public class JavaDAO implements DAO {
 				prepared.append("} \r\n");
 				break;
 				
-			case Types.FLOAT:
+			case Types.REAL:
 				prepared.append("\t\t\t");
 				prepared.append("Float " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" == null){ \r\n");
 				prepared.append("\t\t\t\t");
-				prepared.append("preparedStatement.setNull(" + i +", java.sql.Types.FLOAT); \r\n");
+				prepared.append("preparedStatement.setNull(" + i +", java.sql.Types.REAL); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("} else { \r\n");
 				prepared.append("\t\t\t\t");
@@ -604,13 +615,13 @@ public class JavaDAO implements DAO {
 					prepared.append("} \r\n");
 					break;
 					
-				case Types.FLOAT:
+				case Types.REAL:
 					prepared.append("\t\t\t");
 					prepared.append("Float " + Utils.formatVariableName(primaryKeyName.get(j)) + " = pojo.get" + Utils.formatFileName(primaryKeyName.get(j)) + "(); \r\n");
 					prepared.append("\t\t\t");
 					prepared.append("if (" + Utils.formatVariableName(primaryKeyName.get(j)) +" == null){ \r\n");
 					prepared.append("\t\t\t\t");
-					prepared.append("preparedStatement.setNull(" + i +", java.sql.Types.FLOAT); \r\n");
+					prepared.append("preparedStatement.setNull(" + i +", java.sql.Types.REAL); \r\n");
 					prepared.append("\t\t\t");
 					prepared.append("} else { \r\n");
 					prepared.append("\t\t\t\t");
@@ -783,6 +794,7 @@ public class JavaDAO implements DAO {
 		StringBuilder result   = new StringBuilder();
 		StringBuilder column   = new StringBuilder();
 		StringBuilder prepared = new StringBuilder();
+		StringBuilder setters  = new StringBuilder();
 		String sql = "";
 		
 		int i = 1;
@@ -790,138 +802,284 @@ public class JavaDAO implements DAO {
 		for (ColumnInfo columnInfo: tableInfo.getColumns()){
 			if (!columnInfo.isPrimaryKey() && !columnInfo.isImportedKey()) continue;
 
-			if (column.length() > 0) column.append(" AND ");
-			column.append("`" + columnInfo.getColumnName() + "` = ?");
-			
 			switch (columnInfo.getType()){
 			case Types.TINYINT:
+				column.append("\t\t\t");
+				column.append("Byte " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
+				column.append("\t\t\t");
+				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
+				column.append("\t\t\t\t");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
+				column.append("\t\t\t");
+				column.append("} \r\n");
+				
 				prepared.append("\t\t\t");
-				prepared.append("if (pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "() != null){ \r\n");
+				prepared.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				prepared.append("\t\t\t\t");
-				prepared.append("preparedStatement.setByte(" + i++ +", pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
+				prepared.append("preparedStatement.setByte(i++, pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("} \r\n");
+				
+				setters.append("\t\t\t\t");
+				setters.append("obj.set" + Utils.formatFileName(columnInfo.getColumnName()) + "(rs.getByte(\"" + columnInfo.getColumnName() + "\")); \r\n");
 				break;
 
 			case Types.SMALLINT:
+				column.append("\t\t\t");
+				column.append("Short " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
+				column.append("\t\t\t");
+				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
+				column.append("\t\t\t\t");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
+				column.append("\t\t\t");
+				column.append("} \r\n");
+				
 				prepared.append("\t\t\t");
-				prepared.append("if (pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "() != null){ \r\n");
+				prepared.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				prepared.append("\t\t\t\t");
-				prepared.append("preparedStatement.setShort(" + i++ +", pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
+				prepared.append("preparedStatement.setShort(i++, pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("} \r\n");
+				
+				setters.append("\t\t\t\t");
+				setters.append("obj.set" + Utils.formatFileName(columnInfo.getColumnName()) + "(rs.getShort(\"" + columnInfo.getColumnName() + "\")); \r\n");
 				break;
 				
-			case Types.INTEGER:				
+			case Types.INTEGER:
+				column.append("\t\t\t");
+				column.append("Integer " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
+				column.append("\t\t\t");
+				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
+				column.append("\t\t\t\t");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
+				column.append("\t\t\t");
+				column.append("} \r\n");
+				
 				prepared.append("\t\t\t");
-				prepared.append("if (pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "() != null){ \r\n");
+				prepared.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				prepared.append("\t\t\t\t");
-				prepared.append("preparedStatement.setInt(" + i++ +", pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
+				prepared.append("preparedStatement.setInt(i++, pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("} \r\n");
+				
+				setters.append("\t\t\t\t");
+				setters.append("obj.set" + Utils.formatFileName(columnInfo.getColumnName()) + "(rs.getInt(\"" + columnInfo.getColumnName() + "\")); \r\n");
 				break;
 				
 			case Types.BIGINT:
+				column.append("\t\t\t");
+				column.append("Long " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
+				column.append("\t\t\t");
+				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
+				column.append("\t\t\t\t");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
+				column.append("\t\t\t");
+				column.append("} \r\n");
+				
 				prepared.append("\t\t\t");
-				prepared.append("if (pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "() != null){ \r\n");
+				prepared.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				prepared.append("\t\t\t\t");
-				prepared.append("preparedStatement.setLong(" + i++ +", pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
+				prepared.append("preparedStatement.setLong(i++, pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("} \r\n");
+				
+				setters.append("\t\t\t\t");
+				setters.append("obj.set" + Utils.formatFileName(columnInfo.getColumnName()) + "(rs.getLong(\"" + columnInfo.getColumnName() + "\")); \r\n");
 				break;
 				
-			case Types.FLOAT:
+			case Types.REAL:
+				column.append("\t\t\t");
+				column.append("Float " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
+				column.append("\t\t\t");
+				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
+				column.append("\t\t\t\t");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
+				column.append("\t\t\t");
+				column.append("} \r\n");
+				
 				prepared.append("\t\t\t");
-				prepared.append("if (pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "() != null){ \r\n");
+				prepared.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				prepared.append("\t\t\t\t");
-				prepared.append("preparedStatement.setFloat(" + i++ +", pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
+				prepared.append("preparedStatement.setFloat(i++, pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("} \r\n");
+				
+				setters.append("\t\t\t\t");
+				setters.append("obj.set" + Utils.formatFileName(columnInfo.getColumnName()) + "(rs.getFloat(\"" + columnInfo.getColumnName() + "\")); \r\n");
 				break;
 				
 			case Types.DOUBLE:
+				column.append("\t\t\t");
+				column.append("Double " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
+				column.append("\t\t\t");
+				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
+				column.append("\t\t\t\t");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
+				column.append("\t\t\t");
+				column.append("} \r\n");
+				
 				prepared.append("\t\t\t");
-				prepared.append("if (pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "() != null){ \r\n");
+				prepared.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				prepared.append("\t\t\t\t");
-				prepared.append("preparedStatement.setDouble(" + i++ +", pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
+				prepared.append("preparedStatement.setDouble(i++, pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("} \r\n");
+				
+				setters.append("\t\t\t\t");
+				setters.append("obj.set" + Utils.formatFileName(columnInfo.getColumnName()) + "(rs.getDouble(\"" + columnInfo.getColumnName() + "\")); \r\n");
 				break;
 				
 			case Types.VARCHAR:
+				column.append("\t\t\t");
+				column.append("String " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
+				column.append("\t\t\t");
+				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
+				column.append("\t\t\t\t");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
+				column.append("\t\t\t");
+				column.append("} \r\n");
+				
 				prepared.append("\t\t\t");
-				prepared.append("if (pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "() != null){ \r\n");
+				prepared.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				prepared.append("\t\t\t\t");
-				prepared.append("preparedStatement.setString(" + i++ +", pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
+				prepared.append("preparedStatement.setString(i++, pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("} \r\n");
+				
+				setters.append("\t\t\t\t");
+				setters.append("obj.set" + Utils.formatFileName(columnInfo.getColumnName()) + "(rs.getString(\"" + columnInfo.getColumnName() + "\")); \r\n");
 				break;
 				
 			case Types.LONGVARCHAR:
+				column.append("\t\t\t");
+				column.append("String " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
+				column.append("\t\t\t");
+				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
+				column.append("\t\t\t\t");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
+				column.append("\t\t\t");
+				column.append("} \r\n");
+				
 				prepared.append("\t\t\t");
-				prepared.append("if (pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "() != null){ \r\n");
+				prepared.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				prepared.append("\t\t\t\t");
-				prepared.append("preparedStatement.setString(" + i++ +", pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
+				prepared.append("preparedStatement.setString(i++, pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("} \r\n");
+				
+				setters.append("\t\t\t\t");
+				setters.append("obj.set" + Utils.formatFileName(columnInfo.getColumnName()) + "(rs.getString(\"" + columnInfo.getColumnName() + "\")); \r\n");
 				break;
 				
 			case Types.CHAR:
+				column.append("\t\t\t");
+				column.append("String " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
+				column.append("\t\t\t");
+				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
+				column.append("\t\t\t\t");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
+				column.append("\t\t\t");
+				column.append("} \r\n");
+				
 				prepared.append("\t\t\t");
-				prepared.append("if (pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "() != null){ \r\n");
+				prepared.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				prepared.append("\t\t\t\t");
-				prepared.append("preparedStatement.setString(" + i++ +", pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
+				prepared.append("preparedStatement.setString(i++, pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("} \r\n");
+				
+				setters.append("\t\t\t\t");
+				setters.append("obj.set" + Utils.formatFileName(columnInfo.getColumnName()) + "(rs.getString(\"" + columnInfo.getColumnName() + "\")); \r\n");
 				break;
 				
 			case Types.DATE:
+				column.append("\t\t\t");
+				column.append("String " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
+				column.append("\t\t\t");
+				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
+				column.append("\t\t\t\t");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
+				column.append("\t\t\t");
+				column.append("} \r\n");
+				
 				prepared.append("\t\t\t");
-				prepared.append("if (pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "() != null){ \r\n");
+				prepared.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				prepared.append("\t\t\t\t");
-				prepared.append("preparedStatement.setString(" + i++ +", pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
+				prepared.append("preparedStatement.setString(i++, pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("} \r\n");
+				
+				setters.append("\t\t\t\t");
+				setters.append("obj.set" + Utils.formatFileName(columnInfo.getColumnName()) + "(rs.getString(\"" + columnInfo.getColumnName() + "\")); \r\n");
 				break;
 				
 			case Types.TIME:
+				column.append("\t\t\t");
+				column.append("String " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
+				column.append("\t\t\t");
+				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
+				column.append("\t\t\t\t");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
+				column.append("\t\t\t");
+				column.append("} \r\n");
+				
 				prepared.append("\t\t\t");
-				prepared.append("if (pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "() != null){ \r\n");
+				prepared.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				prepared.append("\t\t\t\t");
-				prepared.append("preparedStatement.setString(" + i++ +", pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
+				prepared.append("preparedStatement.setString(i++, pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("} \r\n");
+				
+				setters.append("\t\t\t\t");
+				setters.append("obj.set" + Utils.formatFileName(columnInfo.getColumnName()) + "(rs.getString(\"" + columnInfo.getColumnName() + "\")); \r\n");
 				break;
 				
 			case Types.TIMESTAMP:
+				column.append("\t\t\t");
+				column.append("String " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
+				column.append("\t\t\t");
+				column.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
+				column.append("\t\t\t\t");
+				column.append("sql.append(\" AND `" + columnInfo.getColumnName() + "` = ?\"); \r\n");
+				column.append("\t\t\t");
+				column.append("} \r\n");
+				
 				prepared.append("\t\t\t");
-				prepared.append("if (pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "() != null){ \r\n");
+				prepared.append("if (" + Utils.formatVariableName(columnInfo.getColumnName()) +" != null){ \r\n");
 				prepared.append("\t\t\t\t");
-				prepared.append("preparedStatement.setString(" + i++ +", pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
+				prepared.append("preparedStatement.setString(i++, pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
 				prepared.append("\t\t\t");
 				prepared.append("} \r\n");
+				
+				setters.append("\t\t\t\t");
+				setters.append("obj.set" + Utils.formatFileName(columnInfo.getColumnName()) + "(rs.getString(\"" + columnInfo.getColumnName() + "\")); \r\n");
 				break;
 			}
+			
+			i++;
 		}
 		
-		if (column.length() > 0){
-			sql = "DELETE FROM " + tableInfo.getTableName() + " WHERE " + column.toString() + ";";
-		} else {
-			sql = "DELETE FROM " + tableInfo.getTableName() + ";";
-		}
-
 		result.append("public boolean delete(" + pojoName + " pojo, Connection conn){ \r\n");
-		
 			result.append("\t\t");
-			result.append("String sql = \"" + sql + "\"; \r\n\r\n");
+			result.append("int i = 1; \r\n");
+			result.append("\t\t");
+			result.append("StringBuilder sql = new StringBuilder(); \r\n\r\n");
 			result.append("\t\t");
 			
 			result.append("try{ \r\n");
 				result.append("\t\t\t");
 				
-				result.append("PreparedStatement preparedStatement = conn.prepareStatement(sql); \r\n\r\n");
+				result.append("sql.append(\"DELETE FROM " + tableInfo.getTableName() + " WHERE 1=1 \");\r\n\r\n");
+				
+				result.append(column.toString() + "\r\n");
+				
+				result.append("\t\t\t");
+				result.append("PreparedStatement preparedStatement = conn.prepareStatement(sql.toString()); \r\n\r\n");
 				
 				result.append(prepared.toString() + "\r\n");
+				
+				result.append("\t\t\t");
+				result.append("if (i == 1) return false; \r\n");
 				
 				result.append("\t\t\t");
 				result.append("if (preparedStatement.executeUpdate() > 0){ \r\n");
@@ -1048,10 +1206,10 @@ public class JavaDAO implements DAO {
 				prepared.append("} \r\n");
 				
 				setters.append("\t\t\t\t");
-				setters.append("obj.set" + Utils.formatFileName(columnInfo.getColumnName()) + "(\"rs.getLong(" + columnInfo.getColumnName() + "\")); \r\n");
+				setters.append("obj.set" + Utils.formatFileName(columnInfo.getColumnName()) + "(rs.getLong(\"" + columnInfo.getColumnName() + "\")); \r\n");
 				break;
 				
-			case Types.FLOAT:
+			case Types.REAL:
 				column.append("\t\t\t");
 				column.append("Float " + Utils.formatVariableName(columnInfo.getColumnName()) + " = pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "(); \r\n");
 				column.append("\t\t\t");
@@ -1296,68 +1454,71 @@ public class JavaDAO implements DAO {
 			result.append("\r\n");
 			result.append("\t\t");
 			
-				result.append("\t\t");
-				result.append("result = search(pojo, conn); \r\n");
+			result.append("result = search(pojo, conn); \r\n");
 			
-				if (tableInfo.getImportedCount() > 1){					
-					int i = 1;
-					for (ColumnInfo columnInfo: tableInfo.getImportedColumns()){
+			if (tableInfo.getImportedCount() > 1){					
+				int i = 1;
+				for (ColumnInfo columnInfo: tableInfo.getImportedColumns()){
+					String name = Utils.formatFileName(columnInfo.getTableName());
+					
+					result.append("\r\n");
+					result.append("\t\t");
+					result.append("if (pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "() == null){ \r\n");
+						
+						
+						
+						result.append("\t\t\t");
+						result.append(name + daoSuffix  + " dao"  + i + " = new " + name + daoSuffix  + "(); \r\n");
+						result.append("\t\t\t");
+						result.append(name + pojoSuffix + " pojo" + i + " = new " + name + pojoSuffix + "(); \r\n");
+						
+						result.append("\t\t\t");
+						result.append("for (" + pojoName + " model: result){ \r\n");
+						
+							result.append("\t\t\t\t");
+							result.append("pojo" + i + ".set" + Utils.formatFileName(columnInfo.getExportedColumnName()) + "(model.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
+							result.append("\t\t\t\t");
+							result.append("model.set" + name + "(dao" + i + ".search(pojo" + i + ", conn)); \r\n");
+							
+						result.append("\t\t\t");
+						result.append("} \r\n");
+
+					result.append("\t\t");
+					result.append("} \r\n");
+					
+					i++;
+				}
+			} 
+				
+			if (tableInfo.getExportedCount() > 0){
+				int i = 1;
+				for (ColumnInfo columnInfo: tableInfo.getExportedColumns()){
+					String name = Utils.formatFileName(columnInfo.getTableName());
+					result.append("\t\t");
+					result.append(name + daoSuffix + " dao" + (i++) + " = new " + name + daoSuffix + "(); \r\n");
+				}
+				result.append("\t\t");
+				result.append("for (" + pojoName + " pojo2: result){ \r\n");
+					
+					i = 1;
+					for (ColumnInfo columnInfo: tableInfo.getExportedColumns()){
 						String name = Utils.formatFileName(columnInfo.getTableName());
 						
-						result.append("\r\n");
-						result.append("\t\t");
-						result.append("if (pojo.get" + Utils.formatFileName(columnInfo.getColumnName()) + "() == null){ \r\n");
+						result.append("\t\t\t");
+						result.append("for (" + name + pojoSuffix + " pojo3 :pojo.get" + name + "()){ \r\n");
 							
-							
-							
-							result.append("\t\t\t");
-							result.append(name + daoSuffix  + " dao"  + i + " = new " + name + daoSuffix  + "(); \r\n");
-							result.append("\t\t\t");
-							result.append(name + pojoSuffix + " pojo" + i + " = new " + name + pojoSuffix + "(); \r\n");
-							
-							result.append("\t\t\t");
-							result.append("for (" + pojoName + " model: result){ \r\n");
-							
-								result.append("\t\t\t\t");
-								result.append("pojo" + i + ".set" + Utils.formatFileName(columnInfo.getExportedColumnName()) + "(model.get" + Utils.formatFileName(columnInfo.getColumnName()) + "()); \r\n");
-								result.append("\t\t\t\t");
-								result.append("model.set" + name + "(dao" + i + ".search(pojo" + i + ", conn)); \r\n");
-								
-							result.append("\t\t\t");
-							result.append("} \r\n");
-	
-						result.append("\t\t");
+							result.append("\t\t\t\t");
+							result.append("pojo3.set" + Utils.formatFileName(columnInfo.getColumnName()) + "(pojo2.get" + Utils.formatFileName(columnInfo.getExportedColumnName()) + "()); \r\n");
+							result.append("\t\t\t\t");
+							result.append("pojo2.set" + name + "(dao" + (i++) + ".outerSearch(pojo3, conn)); \r\n");
+						
+						result.append("\t\t\t");
 						result.append("} \r\n");
-						
-						i++;
 					}
-				} 
 				
-				if (tableInfo.getExportedCount() > 0){
-					result.append("\t\t\t");
-					result.append("for (" + pojoName + " pojo2: result){ \r\n");
-						
-						int i = 1;
-						for (ColumnInfo columnInfo: tableInfo.getExportedColumns()){
-							String name = Utils.formatFileName(columnInfo.getTableName());
-							
-							result.append("\t\t\t\t");
-							result.append(name + daoSuffix + " dao" + i + " = new " + name + daoSuffix + "(); \r\n");
-							result.append("\t\t\t\t");
-							result.append("for (" + name + pojoSuffix + " pojo3 :pojo.get" + name + "()){ \r\n");
-								
-								result.append("\t\t\t\t\t");
-								result.append("pojo3.set" + Utils.formatFileName(columnInfo.getColumnName()) + "(pojo2.get" + Utils.formatFileName(columnInfo.getExportedColumnName()) + "()); \r\n");
-								result.append("\t\t\t\t\t");
-								result.append("pojo2.set" + name + "(dao" + (i++) + ".outerSearch(pojo3, conn)); \r\n");
-							
-							result.append("\t\t\t\t");
-							result.append("} \r\n");
-						}
-					
-					result.append("\t\t\t");
-					result.append("} \r\n");
-				}
+				result.append("\t\t");
+				result.append("} \r\n");
+			}
 
 			result.append("\t\t");
 			result.append("return result; \r\n");
@@ -1375,7 +1536,7 @@ public class JavaDAO implements DAO {
 	}
 
 	@Override
-	public String checkInsertPOJO(String pojoName, TableInfo tableInfo) {
+	public String getCheckInsertPOJO(String pojoName, TableInfo tableInfo) {
 		StringBuilder result = new StringBuilder();
 		
 		result.append("public String checkInsertPOJO(" + pojoName + " pojo){ \r\n");
@@ -1400,7 +1561,7 @@ public class JavaDAO implements DAO {
 	}
 
 	@Override
-	public String checkUpdatePOJO(String pojoName, TableInfo tableInfo) {
+	public String getCheckUpdatePOJO(String pojoName, TableInfo tableInfo) {
 		StringBuilder result = new StringBuilder();
 		
 		result.append("public String checkUpdatePOJO(" + pojoName + " pojo){ \r\n");
@@ -1425,7 +1586,7 @@ public class JavaDAO implements DAO {
 	}
 
 	@Override
-	public String checkDeletePOJO(String pojoName, TableInfo tableInfo) {
+	public String getCheckDeletePOJO(String pojoName, TableInfo tableInfo) {
 		StringBuilder result = new StringBuilder();
 		
 		result.append("public String checkDeletePOJO(" + pojoName + " pojo){ \r\n");
@@ -1463,7 +1624,7 @@ public class JavaDAO implements DAO {
 	}
 
 	@Override
-	public String checkSearchPOJO(String pojoName, TableInfo tableInfo) {
+	public String getCheckSearchPOJO(String pojoName, TableInfo tableInfo) {
 		StringBuilder result = new StringBuilder();
 		
 		result.append("public String checkSearchPOJO(" + pojoName + " pojo){ \r\n");

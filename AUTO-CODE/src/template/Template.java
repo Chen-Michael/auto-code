@@ -40,7 +40,7 @@ public class Template {
 				result.append("\t" + pojo.getLongGetters (columnInfo.getColumnName()) + "\r\n\r\n");
 				break;
 				
-			case Types.FLOAT:
+			case Types.REAL:
 				result.append("\t" + pojo.getFloatVariable(columnInfo.getColumnName()) + "\r\n");
 				result.append("\t" + pojo.getFloatSetters (columnInfo.getColumnName()) + "\r\n");
 				result.append("\t" + pojo.getFloatGetters (columnInfo.getColumnName()) + "\r\n\r\n");
@@ -111,21 +111,22 @@ public class Template {
 		return result.toString();
 	}
 	
-	public static String getDAO(DAO dao, String pojoName, String daoName, TableInfo tableInfo, List<String> importClass, String pojoSuffix, String daoSuffix){
+	public static String getDAO(DAO dao, String pojoName, String daoName, TableInfo tableInfo, List<String> importClass, List<String> variables, String pojoSuffix, String daoSuffix){
 		StringBuilder result = new StringBuilder();
 		
 		result.append(dao.getClassImport(importClass) + "\r\n");
 		result.append(dao.getClassHeader(daoName) + "\r\n");
-		result.append("\t" + dao.getClassConstructor (daoName) + "\r\n");
+		result.append("\t" + dao.getClassConstructor (daoName)             + "\r\n");
+		result.append("\t" + dao.getVariable         (variables)           + "\r\n");
 		result.append("\t" + dao.getInsertMethod     (pojoName, tableInfo) + "\r\n");
 		result.append("\t" + dao.getUpdateMethod     (pojoName, tableInfo) + "\r\n");
 		result.append("\t" + dao.getDeleteMethod     (pojoName, tableInfo) + "\r\n");
 		result.append("\t" + dao.getSearchMethod     (pojoName, tableInfo) + "\r\n");
 		result.append("\t" + dao.getOuterSearchMethod(pojoName, tableInfo, pojoSuffix, daoSuffix) + "\r\n");
-		result.append("\t" + dao.checkInsertPOJO     (pojoName, tableInfo) + "\r\n");
-		result.append("\t" + dao.checkUpdatePOJO     (pojoName, tableInfo) + "\r\n");
-		result.append("\t" + dao.checkDeletePOJO     (pojoName, tableInfo) + "\r\n");
-		result.append("\t" + dao.checkSearchPOJO     (pojoName, tableInfo) + "\r\n");
+		result.append("\t" + dao.getCheckInsertPOJO  (pojoName, tableInfo) + "\r\n");
+		result.append("\t" + dao.getCheckUpdatePOJO  (pojoName, tableInfo) + "\r\n");
+		result.append("\t" + dao.getCheckDeletePOJO  (pojoName, tableInfo) + "\r\n");
+		result.append("\t" + dao.getCheckSearchPOJO  (pojoName, tableInfo) + "\r\n");
 		result.append(dao.getClassFooter());
 		
 		return result.toString();

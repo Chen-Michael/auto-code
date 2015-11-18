@@ -20,6 +20,7 @@ import template.POJO;
 import template.Template;
 import template.java.JavaAPI;
 import template.java.JavaDAO;
+import template.java.JavaFuzzySearchDAO;
 import template.java.JavaPOJO;
 
 import javax.swing.GroupLayout;
@@ -175,7 +176,7 @@ public class Main extends JFrame {
 			    	}
 			    	
 			    	POJO pojo = new JavaPOJO();
-			    	DAO  dao  = new JavaDAO();
+			    	DAO  dao  = new JavaFuzzySearchDAO();
 			    	API  api  = new JavaAPI();
 			    	String fileSuffix = ".java";
 			    	String pojoSuffix = "Model";
@@ -187,6 +188,7 @@ public class Main extends JFrame {
 			    	String apiName  = "";
 			    	
 			    	List<String> importName = new ArrayList<String>();
+			    	List<String> variables  = new ArrayList<String>();
 			    	
 			    	for (SchemaInfo schema: selectedSchema){
 						for (TableInfo table: schema.getTables()){
@@ -205,7 +207,7 @@ public class Main extends JFrame {
 								
 								WriteFile.write(
 									path + daoName + fileSuffix, 
-									Template.getDAO(dao, pojoName, daoName, table, importName, pojoSuffix, daoSuffix)
+									Template.getDAO(dao, pojoName, daoName, table, importName, variables, pojoSuffix, daoSuffix)
 								);
 							} 
 							

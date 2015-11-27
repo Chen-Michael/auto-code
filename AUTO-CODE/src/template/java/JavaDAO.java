@@ -748,8 +748,8 @@ public class JavaDAO implements DAO {
 		
 			result.append("\t\t");
 			result.append("String sql = \"" + sql + "\"; \r\n\r\n");
-			result.append("\t\t");
 			
+			result.append("\t\t");
 			result.append("try{ \r\n");
 				result.append("\t\t\t");
 				

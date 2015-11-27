@@ -97,7 +97,9 @@ public class Template {
 				result.append("\t" + pojo.getModelAdd     (columnInfo.getTableName(), pojoSuffix)  + "\r\n");
 				result.append("\t" + pojo.getModelGetters (columnInfo.getTableName(), pojoSuffix) + "\r\n\r\n");
 			}
-		} else if (tableInfo.getImportedCount() > 1){
+		} 
+
+		if (tableInfo.getImportedCount() > 1){
 			for (ColumnInfo columnInfo: tableInfo.getImportedColumns()){
 				result.append("\t" + pojo.getModelVariable(columnInfo.getTableName(), pojoSuffix)  + "\r\n");
 				result.append("\t" + pojo.getModelSetters (columnInfo.getTableName(), pojoSuffix)  + "\r\n");
@@ -135,14 +137,14 @@ public class Template {
 	public static String getAPI(API api, String pojoName, String daoName, String apiName, TableInfo tableInfo, List<String> importClass){
 		StringBuilder result = new StringBuilder();
 		
-		result.append(api.getClassImport(importClass) + "\r\n");
-		result.append(api.getClassHeader(apiName) + "\r\n");
-		result.append("\t" + api.getClassConstructor(apiName) + "\r\n");
+		result.append(api.getClassImport(importClass)                            + "\r\n");
+		result.append(api.getClassHeader(apiName)                                + "\r\n");
+		result.append("\t" + api.getClassConstructor(apiName)                    + "\r\n");
 		result.append("\t" + api.getDoGetMethod   (pojoName, daoName, tableInfo) + "\r\n");
 		result.append("\t" + api.getDoPutMethod   (pojoName, daoName, tableInfo) + "\r\n");
 		result.append("\t" + api.getDoPostMethod  (pojoName, daoName, tableInfo) + "\r\n");
 		result.append("\t" + api.getDoDeleteMethod(pojoName, daoName, tableInfo) + "\r\n");
-		result.append("\t" + api.getPOJO          (pojoName, tableInfo) + "\r\n");
+		result.append("\t" + api.getPOJO          (pojoName, tableInfo         ) + "\r\n");
 		result.append(api.getClassFooter());
 		
 		return result.toString();
